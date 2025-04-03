@@ -1,0 +1,100 @@
+﻿<Window x:Class="KoteskiOlmesLB_426.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KoteskiOlmesLB_426.Views"
+        mc:Ignorable="d"
+        Title="Casino Royale" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#E0E0E0">
+    <!-- Hellgrauer Hintergrund -->
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20,10">
+            <TextBlock Text="Willkommen im Casino!" 
+                       FontSize="24" 
+                       Foreground="White" 
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" 
+                       Text="Spielername:" 
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Row="0" Grid.Column="1" 
+                     Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="0,5,0,15"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" 
+                       Text="Startguthaben (Jetons):" 
+                       VerticalAlignment="Center"/>
+
+            <TextBox Grid.Row="1" Grid.Column="1" 
+                     Text="{Binding InitialBalance, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="0,5,0,15"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Text="{Binding ErrorMessage}" 
+                       Foreground="Red" 
+                       Visibility="{Binding HasError, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                    Content="Spielen" 
+                    Command="{Binding StartGameCommand}" 
+                    Background="#27AE60" 
+                    Foreground="White" 
+                    FontWeight="Bold" 
+                    Margin="0,20"/>
+        </Grid>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" 
+                   Text="© 2025 Casino WPF App" 
+                   HorizontalAlignment="Center" 
+                   Margin="10"/>
+    </Grid>
+</Window>
