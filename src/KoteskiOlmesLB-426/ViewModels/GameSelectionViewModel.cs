@@ -9,10 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
+
 namespace KoteskiOlmesLB_426.ViewModels
 {
 
-    public class GameSelectionViewModel : INotifyPropertyChanged, IObserver<SessionData>
+    public class GameSelectionViewModel : INotifyPropertyChanged, KoteskiOlmesLB_426.Services.IObserver<SessionData>
     {
         private readonly Session _session;
         private Player _currentPlayer;

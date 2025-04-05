@@ -11,22 +11,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using KoteskiOlmesLB_426.ViewModels;
 using KoteskiOlmesLB_426.Views;
 
 namespace KoteskiOlmesLB_426.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for StartPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class StartPage : Page
     {
-        public MainWindow()
+        public StartPage()
         {
             InitializeComponent();
-
-            // Navigiere sofort zur StartPage
-            MainFrame.Navigate(new StartPage());
+            DataContext = new StartViewModel();
         }
-
     }
+
 }

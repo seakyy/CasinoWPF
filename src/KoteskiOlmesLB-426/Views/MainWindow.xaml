@@ -8,8 +8,8 @@
         Title="Casino Royale" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         Background="#E0E0E0">
-    <!-- Hellgrauer Hintergrund -->
 
+    <!-- Ressourcen für Stile -->
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="14"/>
@@ -46,50 +46,12 @@
                        HorizontalAlignment="Center"/>
         </Border>
 
-        <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Row="0" Grid.Column="0" 
-                       Text="Spielername:" 
-                       VerticalAlignment="Center"/>
-
-            <TextBox Grid.Row="0" Grid.Column="1" 
-                     Text="{Binding PlayerName, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="0,5,0,15"/>
-
-            <TextBlock Grid.Row="1" Grid.Column="0" 
-                       Text="Startguthaben (Jetons):" 
-                       VerticalAlignment="Center"/>
-
-            <TextBox Grid.Row="1" Grid.Column="1" 
-                     Text="{Binding InitialBalance, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="0,5,0,15"/>
-
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Text="{Binding ErrorMessage}" 
-                       Foreground="Red" 
-                       Visibility="{Binding HasError, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                    Content="Spielen" 
-                    Command="{Binding StartGameCommand}" 
-                    Background="#27AE60" 
-                    Foreground="White" 
-                    FontWeight="Bold" 
-                    Margin="0,20"/>
-        </Grid>
+        <!-- Frame für Navigation -->
+        <Frame x:Name="MainFrame"
+               Grid.Row="1"
+               NavigationUIVisibility="Hidden"
+               Background="White"
+               Margin="20"/>
 
         <!-- Footer -->
         <TextBlock Grid.Row="2" 

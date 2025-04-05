@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace KoteskiOlmesLB_426.Views
 {
-    public partial class BlackJackView : Window
+    public partial class BlackJackView : Page
     {
         public BlackJackView()
         {
