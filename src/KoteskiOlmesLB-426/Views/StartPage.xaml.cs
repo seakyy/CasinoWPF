@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using KoteskiOlmesLB_426.ViewModels;
-using KoteskiOlmesLB_426.Views;
+using KoteskiOlmesLB_426.Services;
+using RelayCommand = KoteskiOlmesLB_426.Services.RelayCommand;
 
 namespace KoteskiOlmesLB_426.Views
 {
