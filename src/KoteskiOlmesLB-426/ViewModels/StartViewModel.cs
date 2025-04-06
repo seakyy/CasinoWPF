@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using KoteskiOlmesLB_426.Services;
 using KoteskiOlmesLB_426.Views;
+using System.Windows.Controls;
 
 namespace KoteskiOlmesLB_426.ViewModels
 {
@@ -63,9 +64,12 @@ namespace KoteskiOlmesLB_426.ViewModels
             // Alles OK → Spielsession starten und navigieren
             Session.Instance.StartNewSession(PlayerName, balance);
 
-            var gameSelection = new GameSelectionView();
-            var window = Application.Current.MainWindow as MainWindow;
-            window?.MainFrame.Navigate(gameSelection);
+            // Navigate using MainWindow's Frame
+            var mainWindow = Application.Current.MainWindow as MainWindow;
+            if (mainWindow != null && mainWindow.MainFrame != null)
+            {
+                mainWindow.MainFrame.Navigate(new GameSelectionView());
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
