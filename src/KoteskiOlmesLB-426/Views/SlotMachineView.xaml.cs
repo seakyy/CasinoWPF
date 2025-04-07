@@ -17,7 +17,7 @@ namespace KoteskiOlmesLB_426.Views
 
             InitializeComponent();
 
-            var viewModel = new BlackJackViewModel();
+            var viewModel = new SlotMachineViewModel();
             viewModel.NavigationRequested += ViewModel_NavigationRequested;
 
             DataContext = viewModel;
