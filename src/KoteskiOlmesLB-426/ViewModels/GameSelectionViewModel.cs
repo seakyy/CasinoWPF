@@ -38,6 +38,7 @@ namespace KoteskiOlmesLB_426.ViewModels
         public ICommand StartBlackJackCommand { get; }
         public ICommand StartSlotMachineCommand { get; }
         public ICommand ReturnToMainMenuCommand { get; }
+        
 
         // Event für Navigation
         public event EventHandler<NavigationEventArgs> NavigationRequested;
@@ -55,6 +56,8 @@ namespace KoteskiOlmesLB_426.ViewModels
             StartSlotMachineCommand = new RelayCommand(ExecuteStartSlotMachine);
             ReturnToMainMenuCommand = new RelayCommand(ExecuteReturnToMainMenu);
         }
+
+
 
         // IObserver Implementation
         public void Update(SessionData data)
