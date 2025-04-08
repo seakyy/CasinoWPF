@@ -39,6 +39,12 @@ namespace KoteskiOlmesLB_426.Models
             }
         }
 
+        public void AddBalance(int amount)
+        {
+            Balance += amount;
+        }
+
+
         public Player(string name = "Spieler", int initialBalance = 1000)
         {
             Name = name;

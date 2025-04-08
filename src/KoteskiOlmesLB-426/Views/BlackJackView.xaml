@@ -9,9 +9,6 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BlackJack">
 
-    <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +36,7 @@
                            VerticalAlignment="Center"/>
 
                 <TextBlock Grid.Column="2" 
-                           Text="{Binding CurrentPlayer.Balance, StringFormat={}Guthaben: {0} Jetons}" 
+                           Text="{Binding Balance, StringFormat=Guthaben: {0} Jetons}" 
                            Foreground="White" 
                            FontSize="16" 
                            VerticalAlignment="Center"/>
@@ -55,7 +52,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" 
-                           Text="{Binding DealerScore, StringFormat={}Dealer: {0}}" 
+                           Text="{Binding DealerScore, StringFormat=Dealer: {0}}" 
                            Foreground="White" 
                            FontSize="16" 
                            FontWeight="Bold" 
@@ -113,6 +110,66 @@
             </Grid>
         </Border>
 
+        <!-- Computer Players mit horizontalem Scrollen -->
+        <ScrollViewer Grid.Row="1"
+              HorizontalScrollBarVisibility="Auto"
+              VerticalScrollBarVisibility="Disabled"
+              Margin="10,5,10,0">
+            <ItemsControl ItemsSource="{Binding ComputerPlayers}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#2E4053" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" 
+                                   Text="{Binding Name}" 
+                                   Foreground="White" 
+                                   FontSize="16" 
+                                   FontWeight="Bold" 
+                                   Margin="10,5"/>
+
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Cards}" Margin="10">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Width="70" Height="100" Background="White" BorderBrush="{Binding SuitColor}" BorderThickness="2" CornerRadius="5" Margin="5">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <TextBlock Grid.Row="0" Text="{Binding DisplayValue}" FontWeight="Bold" Foreground="{Binding SuitColor}" Margin="5,2" HorizontalAlignment="Left"/>
+                                                    <TextBlock Grid.Row="1" Text="{Binding SuitSymbol}" FontSize="24" Foreground="{Binding SuitColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Row="2" Text="{Binding DisplayValue}" FontWeight="Bold" Foreground="{Binding SuitColor}" Margin="5,2" HorizontalAlignment="Right"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+
         <!-- Player's Hand -->
         <Border Grid.Row="2" Background="#2C3E50" Margin="10,5">
             <Grid>
@@ -122,11 +179,21 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" 
-                           Text="{Binding PlayerScore, StringFormat={}Spieler: {0}}" 
+                           Text="{Binding PlayerScore, StringFormat=Spieler: {0}}" 
                            Foreground="White" 
                            FontSize="16" 
                            FontWeight="Bold" 
                            Margin="10,5"/>
+
+                <TextBlock Grid.Row="3"
+                           Grid.ColumnSpan="3"
+                           Text="{Binding ResultMessage}" 
+                           FontSize="18" 
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           Margin="10"/>
+
 
                 <ItemsControl Grid.Row="1" 
                               ItemsSource="{Binding PlayerCards}" 
@@ -192,7 +259,9 @@
             <StackPanel Grid.Column="0" 
                         Orientation="Horizontal" 
                         HorizontalAlignment="Center" 
-                        Visibility="{Binding GameInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        Visibility="{Binding GameInProgress, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+
+
                 <Button Content="Hit" 
                         Command="{Binding HitCommand}" 
                         Background="#27AE60" 
@@ -213,15 +282,15 @@
                         Foreground="White" 
                         Width="100" 
                         Margin="5" 
-                        IsEnabled="{Binding CanDoubleDown}"/>
+                        IsEnabled="True"/>
             </StackPanel>
 
             <!-- Result Message -->
             <Border Grid.Column="1" 
-                    Background="{Binding ResultBackground}" 
+                    Background="#2ECC71" 
                     Padding="15,10" 
                     CornerRadius="5" 
-                    Visibility="{Binding HasResult, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    Visibility="{Binding ResultMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock Text="{Binding ResultMessage}" 
                            FontSize="16" 
                            FontWeight="Bold" 
@@ -232,17 +301,26 @@
             <StackPanel Grid.Column="2" 
                         Orientation="Horizontal" 
                         HorizontalAlignment="Center" 
-                        Visibility="{Binding GameInProgress, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+                        Visibility="{Binding GameInProgress, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <TextBlock Text="Spieler:" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,10,0"
+                           Foreground="Black"/>
+
+                <ComboBox Width="60" 
+                          ItemsSource="{Binding PlayerCountOptions}" 
+                          SelectedItem="{Binding SelectedPlayerCount}" 
+                          Margin="0,0,20,0"/>
+
                 <TextBlock Text="Einsatz:" 
                            VerticalAlignment="Center" 
                            Margin="0,0,10,0"
-                           Foreground="White"/>
+                           Foreground="Black"/>
 
                 <ComboBox Width="100" 
                           ItemsSource="{Binding BetOptions}" 
                           SelectedItem="{Binding SelectedBet}" 
-                          Margin="0,0,10,0"
-                          Foreground="White"/>
+                          Margin="0,0,10,0"/>
 
                 <Button Content="Neues Spiel" 
                         Command="{Binding NewGameCommand}" 

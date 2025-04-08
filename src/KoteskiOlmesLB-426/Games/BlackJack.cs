@@ -1,59 +1,24 @@
-﻿using KoteskiOlmesLB_426.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KoteskiOlmesLB_426.Models;
 
 namespace KoteskiOlmesLB_426.Games
 {
-
-    public class Card
-    {
-        public CardSuit Suit { get; }
-        public CardValue Value { get; }
-
-        public Card(CardSuit suit, CardValue value)
-        {
-            Suit = suit;
-            Value = value;
-        }
-
-        public override string ToString()
-        {
-            string valueStr;
-            switch (Value)
-            {
-                case CardValue.Ace:
-                    valueStr = "A";
-                    break;
-                case CardValue.Jack:
-                    valueStr = "J";
-                    break;
-                case CardValue.Queen:
-                    valueStr = "Q";
-                    break;
-                case CardValue.King:
-                    valueStr = "K";
-                    break;
-                default:
-                    valueStr = ((int)Value).ToString();
-                    break;
-            }
-
-            return $"{valueStr} of {Suit}";
-        }
-    }
-
     public class BlackJack : IGame
     {
         private readonly Random _random = new Random();
         private List<Card> _deck;
         private List<Card> _dealerHand;
         private List<Card> _playerHand;
+        private List<ComputerPlayer> _computerPlayers;
         private Player _currentPlayer;
         private int _currentBet;
         private bool _gameRunning;
+        private int _numberOfPlayers;
+
+        private const float BASE_WINNING_MULTIPLIER = 2.0f;
+        private const float ADDITIONAL_PLAYER_MULTIPLIER = 0.5f;
 
         public string Name => "BlackJack";
         public GameType GameType => GameType.BlackJack;
@@ -64,6 +29,17 @@ namespace KoteskiOlmesLB_426.Games
 
         public List<Card> DealerHand => _dealerHand?.ToList();
         public List<Card> PlayerHand => _playerHand?.ToList();
+        public List<ComputerPlayer> ComputerPlayers => _computerPlayers;
+
+        public int NumberOfPlayers
+        {
+            get => _numberOfPlayers;
+            set
+            {
+                if (value >= 1 && value <= 5)
+                    _numberOfPlayers = value;
+            }
+        }
 
         public event EventHandler<GameStateChangedEventArgs> GameStateChanged;
 
@@ -77,6 +53,7 @@ namespace KoteskiOlmesLB_426.Games
             _deck = new List<Card>();
             _dealerHand = new List<Card>();
             _playerHand = new List<Card>();
+            _computerPlayers = new List<ComputerPlayer>();
             _currentPlayer = null;
             _currentBet = 0;
             _gameRunning = false;
@@ -94,7 +71,6 @@ namespace KoteskiOlmesLB_426.Games
                 }
             }
 
-            // Mische das Deck
             ShuffleDeck();
         }
 
@@ -114,9 +90,7 @@ namespace KoteskiOlmesLB_426.Games
         private Card DrawCard()
         {
             if (_deck.Count == 0)
-            {
                 CreateDeck();
-            }
 
             Card card = _deck[0];
             _deck.RemoveAt(0);
@@ -130,33 +104,42 @@ namespace KoteskiOlmesLB_426.Games
 
             foreach (var card in hand)
             {
-                // Behandle Kartenwerte speziell
                 if (card.Value == CardValue.Ace)
                 {
                     aceCount++;
-                    value += 11; // Ass initial als 11 zählen
+                    value += 11;
                 }
                 else if (card.Value == CardValue.Jack || card.Value == CardValue.Queen || card.Value == CardValue.King)
                 {
-                    value += 10; // Bildkarten zählen als 10
+                    value += 10;
                 }
                 else
                 {
-                    value += (int)card.Value; // Zahlenkarten zählen als ihr Wert
+                    value += (int)card.Value;
                 }
             }
 
-            // Passe den Wert von Assen an, wenn nötig
             while (aceCount > 0 && value > 21)
             {
-                value -= 10; // Reduziere ein Ass von 11 auf 1
+                value -= 10;
                 aceCount--;
             }
 
             return value;
         }
 
+        private float CalculateWinningMultiplier()
+        {
+            return BASE_WINNING_MULTIPLIER + (_numberOfPlayers * ADDITIONAL_PLAYER_MULTIPLIER);
+        }
+
         public bool StartGame(Player player, int betAmount)
+        {
+            // Standardmäßig mit einem Computergegner
+            return StartGame(player, betAmount, 1);
+        }
+
+        public bool StartGame(Player player, int betAmount, int numberOfPlayers)
         {
             if (player == null || betAmount < MinimumBet || betAmount > MaximumBet)
                 return false;
@@ -167,28 +150,85 @@ namespace KoteskiOlmesLB_426.Games
             InitializeGame();
             _currentPlayer = player;
             _currentBet = betAmount;
-            _gameRunning = true;
 
-            // Erstelle und mische das Deck
-            CreateDeck();
-
-            // Teile Karten aus
-            _playerHand.Add(DrawCard());
-            _dealerHand.Add(DrawCard());
-            _playerHand.Add(DrawCard());
-            _dealerHand.Add(DrawCard());
-
-            // Prüfe auf BlackJack
-            if (CalculateHandValue(_playerHand) == 21)
+            for (int i = 0; i < _numberOfPlayers; i++)
             {
-                // Spieler hat BlackJack
-                return ExecuteAction("Stand");
+                var comp = new ComputerPlayer($"Computer {i + 1}", 1000);
+                comp.SetBet(betAmount);
+                _computerPlayers.Add(comp);
             }
 
-            // Benachrichtige Beobachter über Spielstart
-            OnGameStateChanged("Spiel gestartet. Deine Karten: " + string.Join(", ", _playerHand));
+            NumberOfPlayers = numberOfPlayers;
 
+
+            _gameRunning = true;
+            CreateDeck();
+
+            _playerHand.Add(DrawCard());
+            _dealerHand.Add(DrawCard());
+            _playerHand.Add(DrawCard());
+            _dealerHand.Add(DrawCard());
+
+            foreach (var comp in _computerPlayers)
+            {
+                comp.AddCard(DrawCard());
+                comp.AddCard(DrawCard());
+            }
+
+            if (CalculateHandValue(_playerHand) == 21)
+                return ExecuteAction("stand");
+
+            OnGameStateChanged("Spiel gestartet. Deine Karten: " + string.Join(", ", _playerHand));
             return true;
+
+        }
+
+        public bool ExecuteAction(string actionName, params object[] parameters)
+        {
+            if (!_gameRunning)
+                return false;
+
+            switch (actionName.ToLower())
+            {
+                case "hit":
+                    _playerHand.Add(DrawCard());
+                    int value = CalculateHandValue(_playerHand);
+                    OnGameStateChanged($"Du ziehst eine Karte. Neuer Wert: {value}");
+                    if (value > 21)
+                        return EndGame() != null;
+                    return true;
+
+                case "stand":
+                    foreach (var comp in _computerPlayers)
+                    {
+                        while (CalculateHandValue(comp.Hand) < 17)
+                        {
+                            comp.AddCard(DrawCard());
+                            OnGameStateChanged($"{comp.Name} zieht eine Karte. Wert: {CalculateHandValue(comp.Hand)}");
+                        }
+                        comp.Stand();
+                    }
+
+                    while (CalculateHandValue(_dealerHand) < 17)
+                    {
+                        _dealerHand.Add(DrawCard());
+                        OnGameStateChanged($"Dealer zieht eine Karte. Dealer Wert: {CalculateHandValue(_dealerHand)}");
+                    }
+
+                    return EndGame() != null;
+
+                case "doubledown":
+                    if (_playerHand.Count != 2 || !_currentPlayer.PlaceBet(_currentBet))
+                        return false;
+
+                    _currentBet *= 2;
+                    _playerHand.Add(DrawCard());
+                    OnGameStateChanged($"Du verdoppelst deinen Einsatz und ziehst eine Karte. Neuer Wert: {CalculateHandValue(_playerHand)}");
+                    return ExecuteAction("stand");
+
+                default:
+                    return false;
+            }
         }
 
         public GameResult EndGame()
@@ -200,78 +240,77 @@ namespace KoteskiOlmesLB_426.Games
 
             int playerValue = CalculateHandValue(_playerHand);
             int dealerValue = CalculateHandValue(_dealerHand);
+            float winningMultiplier = CalculateWinningMultiplier();
 
             bool playerBust = playerValue > 21;
             bool dealerBust = dealerValue > 21;
             bool playerBlackjack = playerValue == 21 && _playerHand.Count == 2;
             bool dealerBlackjack = dealerValue == 21 && _dealerHand.Count == 2;
 
-            bool isWin = false;
+            bool isWin;
             int winAmount = 0;
-            string resultDescription = "";
+            string resultDescription;
             BlackJackResult blackJackResult;
 
             if (playerBust)
             {
-                // Spieler hat sich überkauft
                 isWin = false;
                 resultDescription = "Bust! Deine Hand überschreitet 21.";
                 blackJackResult = BlackJackResult.Bust;
             }
             else if (dealerBust)
             {
-                // Dealer hat sich überkauft
                 isWin = true;
-                winAmount = _currentBet * 2;
                 resultDescription = "Gewonnen! Der Dealer hat sich überkauft.";
                 blackJackResult = BlackJackResult.Win;
             }
             else if (playerBlackjack && !dealerBlackjack)
             {
-                // Spieler hat BlackJack, Dealer nicht
                 isWin = true;
-                winAmount = (int)(_currentBet * 2.5); // BlackJack zahlt 3:2
-                resultDescription = "BlackJack! Du hast 3:2 gewonnen.";
                 blackJackResult = BlackJackResult.BlackJack;
+                resultDescription = "BlackJack! Du hast 3:2 gewonnen.";
             }
             else if (!playerBlackjack && dealerBlackjack)
             {
-                // Dealer hat BlackJack, Spieler nicht
                 isWin = false;
-                resultDescription = "Verloren! Der Dealer hat BlackJack.";
                 blackJackResult = BlackJackResult.Lose;
-            }
-            else if (playerBlackjack && dealerBlackjack)
-            {
-                // Beide haben BlackJack
-                isWin = true;
-                winAmount = _currentBet; // Einsatz zurück
-                resultDescription = "Push! Beide haben BlackJack.";
-                blackJackResult = BlackJackResult.Push;
+                resultDescription = "Verloren! Der Dealer hat BlackJack.";
             }
             else if (playerValue > dealerValue)
             {
-                // Spieler hat höheren Wert
                 isWin = true;
-                winAmount = _currentBet * 2;
-                resultDescription = $"Gewonnen! Deine Hand ({playerValue}) schlägt den Dealer ({dealerValue}).";
                 blackJackResult = BlackJackResult.Win;
+                resultDescription = $"Gewonnen! Deine Hand ({playerValue}) schlägt den Dealer ({dealerValue}).";
             }
             else if (playerValue < dealerValue)
             {
-                // Dealer hat höheren Wert
                 isWin = false;
-                resultDescription = $"Verloren! Der Dealer ({dealerValue}) hat eine bessere Hand als du ({playerValue}).";
                 blackJackResult = BlackJackResult.Lose;
+                resultDescription = $"Verloren! Der Dealer ({dealerValue}) schlägt deine Hand ({playerValue}).";
             }
             else
             {
-                // Gleichstand
                 isWin = true;
-                winAmount = _currentBet; // Einsatz zurück
-                resultDescription = $"Push! Gleichstand mit {playerValue} Punkten.";
                 blackJackResult = BlackJackResult.Push;
+                resultDescription = $"Push! Gleichstand mit {playerValue} Punkten.";
             }
+
+            if (isWin)
+            {
+                winAmount = playerBlackjack
+                    ? (int)(_currentBet * (1.5 + (_numberOfPlayers * 0.5)))
+                    : (int)(_currentBet * winningMultiplier);
+                _currentPlayer.AddBalance(winAmount);
+            }
+
+            var computerResults = _computerPlayers.Select(cp => new Dictionary<string, object>
+            {
+                { "PlayerName", cp.Name },
+                { "HandValue", CalculateHandValue(cp.Hand) },
+                { "Bust", CalculateHandValue(cp.Hand) > 21 },
+                { "BlackJack", CalculateHandValue(cp.Hand) == 21 && cp.Hand.Count == 2 },
+                { "Hand", cp.Hand.ToList() }
+            }).ToList();
 
             var result = new GameResult
             {
@@ -286,70 +325,14 @@ namespace KoteskiOlmesLB_426.Games
                     { "PlayerValue", playerValue },
                     { "DealerValue", dealerValue },
                     { "PlayerHand", _playerHand.ToList() },
-                    { "DealerHand", _dealerHand.ToList() }
+                    { "DealerHand", _dealerHand.ToList() },
+                    { "ComputerPlayers", computerResults },
+                    { "WinningMultiplier", winningMultiplier }
                 }
             };
 
-            // Benachrichtige Beobachter über Spielende
             OnGameStateChanged(resultDescription, true, result);
-
             return result;
-        }
-
-        public bool ExecuteAction(string actionName, params object[] parameters)
-        {
-            if (!_gameRunning)
-                return false;
-
-            switch (actionName.ToLower())
-            {
-                case "hit":
-                    // Spieler nimmt eine weitere Karte
-                    _playerHand.Add(DrawCard());
-
-                    int playerValue = CalculateHandValue(_playerHand);
-                    OnGameStateChanged($"Du ziehst eine Karte. Neuer Wert: {playerValue}");
-
-                    if (playerValue > 21)
-                    {
-                        // Spieler hat sich überkauft
-                        return EndGame() != null;
-                    }
-
-                    return true;
-
-                case "stand":
-                    // Dealer zieht Karten, bis er 17 oder mehr erreicht
-                    while (CalculateHandValue(_dealerHand) < 17)
-                    {
-                        _dealerHand.Add(DrawCard());
-                        OnGameStateChanged($"Dealer zieht eine Karte. Dealer Wert: {CalculateHandValue(_dealerHand)}");
-                    }
-
-                    // Beende das Spiel und bestimme das Ergebnis
-                    return EndGame() != null;
-
-                case "doubledown":
-                    if (_playerHand.Count != 2 || !_currentPlayer.PlaceBet(_currentBet))
-                    {
-                        return false;
-                    }
-
-                    // Verdopple den Einsatz
-                    _currentBet *= 2;
-
-                    // Nimm eine Karte und dann Stand
-                    _playerHand.Add(DrawCard());
-
-                    playerValue = CalculateHandValue(_playerHand);
-                    OnGameStateChanged($"Du verdoppelst deinen Einsatz und ziehst eine Karte. Neuer Wert: {playerValue}");
-
-                    // Spiel automatisch beenden
-                    return ExecuteAction("Stand");
-
-                default:
-                    return false;
-            }
         }
 
         protected virtual void OnGameStateChanged(string message, bool isGameOver = false, GameResult result = null)

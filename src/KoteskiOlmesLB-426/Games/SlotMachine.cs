@@ -52,6 +52,15 @@ namespace KoteskiOlmesLB_426.Games
             _gameRunning = false;
         }
 
+
+        // Diese Methode wird nur zur Interface-Erfüllung benötigt
+        public bool StartGame(Player player, int betAmount, int numberOfPlayers)
+        {
+            // SlotMachine benötigt keine Gegneranzahl, leite einfach weiter
+            return StartGame(player, betAmount);
+        }
+
+
         public bool StartGame(Player player, int betAmount)
         {
             if (player == null || betAmount < MinimumBet || betAmount > MaximumBet)
@@ -59,6 +68,7 @@ namespace KoteskiOlmesLB_426.Games
 
             if (!player.PlaceBet(betAmount))
                 return false;
+
 
             InitializeGame();
             _currentPlayer = player;
