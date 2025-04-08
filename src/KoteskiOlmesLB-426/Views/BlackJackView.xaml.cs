@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using KoteskiOlmesLB_426.Models;
 using KoteskiOlmesLB_426.ViewModels;
+using KoteskiOlmesLB_426.Services;
 
 
 namespace KoteskiOlmesLB_426.Views
@@ -16,7 +18,8 @@ namespace KoteskiOlmesLB_426.Views
         {
             InitializeComponent();
 
-            var viewModel = new BlackJackViewModel();
+            var player = Session.Instance.CurrentPlayer;
+            var viewModel = new BlackJackViewModel(player); // Pass the player instance to the ViewModel
             viewModel.NavigationRequested += ViewModel_NavigationRequested;
 
             DataContext = viewModel;
