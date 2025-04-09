@@ -309,7 +309,7 @@
 
                 <ComboBox Width="60" 
                           ItemsSource="{Binding PlayerCountOptions}" 
-                          SelectedItem="{Binding SelectedPlayerCount}" 
+                          SelectedItem="{Binding SelectedPlayerCount, UpdateSourceTrigger=PropertyChanged}" 
                           Margin="0,0,20,0"/>
 
                 <TextBlock Text="Einsatz:" 
@@ -319,7 +319,7 @@
 
                 <ComboBox Width="100" 
                           ItemsSource="{Binding BetOptions}" 
-                          SelectedItem="{Binding SelectedBet}" 
+                          SelectedItem="{Binding SelectedBet, UpdateSourceTrigger=PropertyChanged}" 
                           Margin="0,0,10,0"/>
 
                 <Button Content="Neues Spiel" 

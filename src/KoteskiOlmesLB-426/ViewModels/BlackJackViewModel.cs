@@ -22,8 +22,19 @@ namespace KoteskiOlmesLB_426.ViewModels
         private int _selectedPlayerCount;
         private int _playerWins;
         private int _dealerWins;
+        private int _balance;
 
-        public int Balance => _currentPlayer?.Balance ?? 0;
+        
+
+        public int Balance
+        {
+            get => _balance;
+            set
+            {
+                _balance = value;
+                OnPropertyChanged(); // ❗️ Damit UI aktualisiert wird
+            }
+        }
 
         public int DealerScore => _game.DealerHand.Sum(card => (int)card.Value);
 
@@ -164,6 +175,7 @@ namespace KoteskiOlmesLB_426.ViewModels
         {
             PlayerCards = new ObservableCollection<Card>(_game.PlayerHand);
             DealerCards = new ObservableCollection<Card>(_game.DealerHand);
+            Balance = _currentPlayer.Balance;
 
             ComputerPlayers.Clear();
             foreach (var comp in _game.ComputerPlayers)
