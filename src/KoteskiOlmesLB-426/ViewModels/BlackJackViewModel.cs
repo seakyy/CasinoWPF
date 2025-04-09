@@ -31,6 +31,7 @@ namespace KoteskiOlmesLB_426.ViewModels
             get => _balance;
             set
             {
+                if (_balance == value) return; // Avoid unnecessary updates
                 _balance = value;
                 OnPropertyChanged(); // ❗️ Damit UI aktualisiert wird
             }
