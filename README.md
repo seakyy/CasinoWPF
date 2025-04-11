@@ -1,5 +1,5 @@
 # 🎰 CasinoWPF
-Notiz: Skizze ist nich Up-to-Date
+Notiz: Skizze ist nicht Up-to-Date
 
 Ein WPF-Projekt in C# zur Simulation eines kleinen digitalen Casinos mit zwei Spielen:
 - **SlotMachine** 🎰
