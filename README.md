@@ -1,6 +1,8 @@
 # 🎰 CasinoWPF
 Notiz: Skizze ist nicht Up-to-Date
 
+Release: 20.04.2025
+
 Ein WPF-Projekt in C# zur Simulation eines kleinen digitalen Casinos mit zwei Spielen:
 - **SlotMachine** 🎰
 - **BlackJack** 🃏
