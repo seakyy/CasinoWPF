@@ -1,14 +1,71 @@
-﻿using System;
+﻿using KoteskiOlmesLB_426.Games;
+using KoteskiOlmesLB_426.Models;
+using KoteskiOlmesLB_426.Services;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace KoteskiOlmesLB_426.ViewModels
 {
-    internal class SlotMachineViewModel
+    public class SlotMachineViewModel : ViewModelBase
     {
+        private readonly SlotMachine _game;
+        private ObservableCollection<SlotSymbol> _reels;
+        private string _resultMessage;
+        private int _selectedBet;
+        private int _balance;
+
+        public bool HasResult => !string.IsNullOrWhiteSpace(ResultMessage);
+
+        public Brush ResultBackground => _resultMessage?.ToLower().Contains("gewonnen") == true ? Brushes.Green : Brushes.IndianRed;
+
+        public ObservableCollection<SlotSymbol> Reels
+        {
+            get => _reels;
+            set
+            {
+                SetProperty(ref _reels, value);
+                OnPropertyChanged(nameof(Reel1Image));
+                OnPropertyChanged(nameof(Reel2Image));
+                OnPropertyChanged(nameof(Reel3Image));
+            }
+        }
+
+        public ObservableCollection<int> BetOptions { get; } = new() { 5, 10, 20, 50, 100 };
+
+        public int SelectedBet
+        {
+            get => _selectedBet;
+            set => SetProperty(ref _selectedBet, value);
+        }
+
+        public string ResultMessage
+        {
+            get => _resultMessage;
+            set
+            {
+                SetProperty(ref _resultMessage, value);
+                OnPropertyChanged(nameof(HasResult));
+                OnPropertyChanged(nameof(ResultBackground));
+            }
+        }
+
+        public int Balance
+        {
+            get => _balance;
+            set => SetProperty(ref _balance, value);
+        }
+
+        public ICommand SpinCommand { get; }
+        public ICommand MaxBetCommand { get; }
+        public ICommand AutoSpinCommand { get; }
+        public ICommand NewGameCommand { get; }
         public ICommand ReturnToSelectionCommand { get; }
         public ICommand ReturnToMainMenuCommand { get; }
 
@@ -16,14 +73,95 @@ namespace KoteskiOlmesLB_426.ViewModels
 
         public SlotMachineViewModel()
         {
+            _game = new SlotMachine();
+            _game.GameStateChanged += OnGameStateChanged;
+
+            Reels = new ObservableCollection<SlotSymbol> { SlotSymbol.Cherry, SlotSymbol.Cherry, SlotSymbol.Cherry };
+            SelectedBet = BetOptions.First();
+
+            SpinCommand = new RelayCommand(_ => Spin());
+            MaxBetCommand = new RelayCommand(_ => SelectedBet = BetOptions.Max());
+            AutoSpinCommand = new RelayCommand(_ => AutoSpin());
+            NewGameCommand = new RelayCommand(_ => StartNewGame());
             ReturnToSelectionCommand = new RelayCommand(_ => OnNavigationRequested("GameSelection"));
             ReturnToMainMenuCommand = new RelayCommand(_ => OnNavigationRequested("MainMenu"));
+
+            Balance = Session.Instance.CurrentPlayer?.Balance ?? 0;
         }
 
-        private void OnNavigationRequested(string target)
+        private void StartNewGame()
         {
-            NavigationRequested?.Invoke(this, new NavigationEventArgs(target));
+            var player = Session.Instance.CurrentPlayer;
+            if (_game.StartGame(player, SelectedBet))
+            {
+                ResultMessage = string.Empty;
+                Balance = player.Balance;
+            }
         }
 
+        private void Spin()
+        {
+            var player = Session.Instance.CurrentPlayer;
+            if (!_game.IsGameRunning)
+            {
+                _game.StartGame(player, SelectedBet);
+            }
+
+            _game.ExecuteAction("spin");
+        }
+
+        private async void AutoSpin()
+        {
+            while (true)
+            {
+                Spin();
+                await Task.Delay(1000);
+            }
+        }
+
+        private void OnGameStateChanged(object sender, GameStateChangedEventArgs e)
+        {
+            ResultMessage = e.Message;
+            Reels = new ObservableCollection<SlotSymbol>(_game.CurrentReels);
+            Balance = Session.Instance.CurrentPlayer.Balance;
+        }
+
+        private void OnNavigationRequested(string view)
+        {
+            NavigationRequested?.Invoke(this, new NavigationEventArgs(view));
+        }
+
+        public ImageSource Reel1Image => GetImage(0);
+        public ImageSource Reel2Image => GetImage(1);
+        public ImageSource Reel3Image => GetImage(2);
+
+        private ImageSource GetImage(int index)
+        {
+            if (Reels.Count > index && _symbolImagePaths.TryGetValue(Reels[index], out var path))
+            {
+                try
+                {
+                    var uri = new Uri($"pack://application:,,,/{path}", UriKind.Absolute);
+                    return new BitmapImage(uri);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Fehler beim Laden von Bild {path}: {ex.Message}");
+                }
+            }
+            return null;
+        }
+
+        private readonly Dictionary<SlotSymbol, string> _symbolImagePaths = new()
+        {
+            { SlotSymbol.Cherry, "Resources/Cherry.jpg" },
+            { SlotSymbol.Lemon,  "Resources/Lemon.jpg" },
+            { SlotSymbol.Orange, "Resources/Orange.jpg" },
+            { SlotSymbol.Plum,   "Resources/Plum.jpg" },
+            { SlotSymbol.Bell,   "Resources/Bell.jpg" },
+            { SlotSymbol.Bar,    "Resources/Bar.jpg" },
+            { SlotSymbol.Seven,  "Resources/Seven.jpg" },
+            { SlotSymbol.Diamond,"Resources/Diamond.jpg" }
+        };
     }
 }

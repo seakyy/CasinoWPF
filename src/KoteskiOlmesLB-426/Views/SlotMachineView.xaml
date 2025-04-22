@@ -86,10 +86,13 @@
                             BorderThickness="5" 
                             CornerRadius="10">
                         <Viewbox>
-                            <TextBlock Text="{Binding Reel1Symbol}" 
-                                       FontSize="72" 
+                            <Viewbox>
+                                <Image Source="{Binding Reel1Image}"
+                                       Stretch="Uniform" 
                                        HorizontalAlignment="Center" 
+                                       Width="100"
                                        VerticalAlignment="Center"/>
+                            </Viewbox>
                         </Viewbox>
                     </Border>
 
@@ -101,10 +104,11 @@
                             BorderThickness="5" 
                             CornerRadius="10">
                         <Viewbox>
-                            <TextBlock Text="{Binding Reel2Symbol}" 
-                                       FontSize="72" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"/>
+                            <Image Source="{Binding Reel2Image}" 
+                                   Stretch="Uniform" 
+                                   HorizontalAlignment="Center" 
+                                   Width="100"
+                                   VerticalAlignment="Center"/>
                         </Viewbox>
                     </Border>
 
@@ -116,10 +120,11 @@
                             BorderThickness="5" 
                             CornerRadius="10">
                         <Viewbox>
-                            <TextBlock Text="{Binding Reel3Symbol}" 
-                                       FontSize="72" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center"/>
+                            <Image Source="{Binding Reel3Image}" 
+                                   Stretch="Uniform" 
+                                   HorizontalAlignment="Center" 
+                                   Width="100"
+                                   VerticalAlignment="Center"/>
                         </Viewbox>
                     </Border>
                 </Grid>
@@ -160,14 +165,14 @@
                           ItemsSource="{Binding BetOptions}" 
                           SelectedItem="{Binding SelectedBet}" 
                           Margin="0,0,10,0"
-                          Foreground="White"/>
+                          Foreground="Black"/>
             </StackPanel>
 
             <Button Grid.Column="1" 
                     Content="SPIN!" 
                     Command="{Binding SpinCommand}" 
                     Background="#E74C3C" 
-                    Foreground="White" 
+                    Foreground="Black" 
                     FontSize="16" 
                     FontWeight="Bold" 
                     Padding="20,10" 
@@ -179,14 +184,14 @@
                 <Button Content="Max Bet" 
                         Command="{Binding MaxBetCommand}" 
                         Background="#9B59B6" 
-                        Foreground="White" 
+                        Foreground="Black" 
                         Padding="10,5" 
                         Margin="0,0,10,0"/>
 
                 <Button Content="Auto Spin" 
                         Command="{Binding AutoSpinCommand}" 
                         Background="#3498DB" 
-                        Foreground="White" 
+                        Foreground="Black" 
                         Padding="10,5"/>
             </StackPanel>
         </Grid>
