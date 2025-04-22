@@ -17,6 +17,10 @@ namespace KoteskiOlmesLB_426.Games
         private bool _gameRunning;
         private int _numberOfPlayers;
 
+        public int GetPlayerHandValue() => CalculateHandValue(_playerHand);
+        public int GetDealerHandValue() => CalculateHandValue(_dealerHand);
+
+
         private const float BASE_WINNING_MULTIPLIER = 2.0f;
         private const float ADDITIONAL_PLAYER_MULTIPLIER = 0.5f;
 
@@ -146,6 +150,13 @@ namespace KoteskiOlmesLB_426.Games
 
             if (!player.PlaceBet(betAmount))
                 return false;
+
+            if (numberOfPlayers == 1)
+            {
+                _dealerHand.Add(DrawCard());
+                _dealerHand.Add(DrawCard());
+            }
+
 
             InitializeGame();
             _currentPlayer = player;

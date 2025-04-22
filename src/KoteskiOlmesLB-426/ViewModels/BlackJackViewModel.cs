@@ -23,8 +23,11 @@ namespace KoteskiOlmesLB_426.ViewModels
         private int _playerWins;
         private int _dealerWins;
         private int _balance;
+        public int PlayerScore => _game.GetPlayerHandValue();
+        public int DealerScore => _game.GetDealerHandValue();
 
-        
+
+
 
         public int Balance
         {
@@ -37,9 +40,6 @@ namespace KoteskiOlmesLB_426.ViewModels
             }
         }
 
-        public int DealerScore => _game.DealerHand.Sum(card => (int)card.Value);
-
-        public int PlayerScore => _game.PlayerHand.Sum(card => (int)card.Value);
 
         /*
         {
@@ -184,6 +184,11 @@ namespace KoteskiOlmesLB_426.ViewModels
 
             OnPropertyChanged(nameof(PlayerScore));
             OnPropertyChanged(nameof(DealerScore));
+
+            DealerCards = SelectedPlayerCount == 1
+                ? new ObservableCollection<Card>(_game.DealerHand)
+                : new ObservableCollection<Card>();
+
 
         }
 
