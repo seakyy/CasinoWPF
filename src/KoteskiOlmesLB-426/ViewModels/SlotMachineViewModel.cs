@@ -20,10 +20,11 @@ namespace KoteskiOlmesLB_426.ViewModels
         private string _resultMessage;
         private int _selectedBet;
         private int _balance;
+        private bool _isAutoSpinning = false;
+
         public ImageSource Reel1DisplayImage { get; set; }
         public ImageSource Reel2DisplayImage { get; set; }
         public ImageSource Reel3DisplayImage { get; set; }
-
 
         public bool HasResult => !string.IsNullOrWhiteSpace(ResultMessage);
 
@@ -85,7 +86,7 @@ namespace KoteskiOlmesLB_426.ViewModels
 
             SpinCommand = new RelayCommand(_ => Spin());
             MaxBetCommand = new RelayCommand(_ => SelectedBet = BetOptions.Max());
-            AutoSpinCommand = new RelayCommand(_ => AutoSpin());
+            AutoSpinCommand = new RelayCommand(_ => ToggleAutoSpin());
             NewGameCommand = new RelayCommand(_ => StartNewGame());
             ReturnToSelectionCommand = new RelayCommand(_ => OnNavigationRequested("GameSelection"));
             ReturnToMainMenuCommand = new RelayCommand(_ => OnNavigationRequested("MainMenu"));
@@ -160,11 +161,18 @@ namespace KoteskiOlmesLB_426.ViewModels
             return null;
         }
 
-
-        private async void AutoSpin()
+        private async void ToggleAutoSpin()
         {
-            while (true)
+            _isAutoSpinning = !_isAutoSpinning;
+
+            while (_isAutoSpinning)
             {
+                if (Session.Instance.CurrentPlayer.Balance < SelectedBet)
+                {
+                    _isAutoSpinning = false;
+                    break;
+                }
+
                 Spin();
                 await Task.Delay(1000);
             }
