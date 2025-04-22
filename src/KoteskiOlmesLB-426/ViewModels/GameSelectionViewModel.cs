@@ -38,7 +38,7 @@ namespace KoteskiOlmesLB_426.ViewModels
         public ICommand StartBlackJackCommand { get; }
         public ICommand StartSlotMachineCommand { get; }
         public ICommand ReturnToMainMenuCommand { get; }
-        
+
 
         // Event für Navigation
         public event EventHandler<NavigationEventArgs> NavigationRequested;
