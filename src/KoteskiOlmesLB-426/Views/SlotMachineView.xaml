@@ -11,6 +11,10 @@
 
 
     <Page.Resources>
+        <Storyboard x:Key="ShakeReel">
+            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                             From="0" To="10" Duration="0:0:0.05" AutoReverse="True" RepeatBehavior="0:0:0.3"/>
+        </Storyboard>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
 
@@ -87,11 +91,17 @@
                             CornerRadius="10">
                         <Viewbox>
                             <Viewbox>
-                                <Image Source="{Binding Reel1Image}"
-                                       Stretch="Uniform" 
-                                       HorizontalAlignment="Center" 
+                                <Image x:Name="Reel1ImageControl"
+                                       Source="{Binding Reel1DisplayImage}"
+                                       RenderTransformOrigin="0.5,0.5"
+                                       Stretch="Uniform"
                                        Width="100"
-                                       VerticalAlignment="Center"/>
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                    <Image.RenderTransform>
+                                        <TranslateTransform />
+                                    </Image.RenderTransform>
+                                </Image>
                             </Viewbox>
                         </Viewbox>
                     </Border>
@@ -104,11 +114,17 @@
                             BorderThickness="5" 
                             CornerRadius="10">
                         <Viewbox>
-                            <Image Source="{Binding Reel2Image}" 
-                                   Stretch="Uniform" 
-                                   HorizontalAlignment="Center" 
+                            <Image x:Name="Reel2ImageControl"
+                                   Source="{Binding Reel2DisplayImage}"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Stretch="Uniform"
                                    Width="100"
-                                   VerticalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                                <Image.RenderTransform>
+                                    <TranslateTransform />
+                                </Image.RenderTransform>
+                            </Image>
                         </Viewbox>
                     </Border>
 
@@ -120,11 +136,17 @@
                             BorderThickness="5" 
                             CornerRadius="10">
                         <Viewbox>
-                            <Image Source="{Binding Reel3Image}" 
-                                   Stretch="Uniform" 
-                                   HorizontalAlignment="Center" 
+                            <Image x:Name="Reel3ImageControl"
+                                   Source="{Binding Reel2DisplayImage}"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Stretch="Uniform"
                                    Width="100"
-                                   VerticalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                                <Image.RenderTransform>
+                                    <TranslateTransform />
+                                </Image.RenderTransform>
+                            </Image>
                         </Viewbox>
                     </Border>
                 </Grid>
@@ -171,6 +193,7 @@
             <Button Grid.Column="1" 
                     Content="SPIN!" 
                     Command="{Binding SpinCommand}" 
+                    Click="SpinButton_Click"
                     Background="#E74C3C" 
                     Foreground="Black" 
                     FontSize="16" 
