@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using KoteskiOlmesLB_426.ViewModels;
+using System.Windows.Media.Animation;
 
 namespace KoteskiOlmesLB_426.Views
 {
@@ -42,7 +43,17 @@ namespace KoteskiOlmesLB_426.Views
 
         private void SpinButton_Click(object sender, RoutedEventArgs e)
         {
-            // Add logic for spinning the slot machine
+            AnimateReel(Reel1ImageControl);
+            AnimateReel(Reel2ImageControl);
+            AnimateReel(Reel3ImageControl);
         }
+
+        private void AnimateReel(UIElement element)
+        {
+            var storyboard = (Storyboard)FindResource("ShakeReel");
+            Storyboard.SetTarget(storyboard, element);
+            storyboard.Begin();
+        }
+
     }
 }

@@ -20,6 +20,10 @@ namespace KoteskiOlmesLB_426.ViewModels
         private string _resultMessage;
         private int _selectedBet;
         private int _balance;
+        public ImageSource Reel1DisplayImage { get; set; }
+        public ImageSource Reel2DisplayImage { get; set; }
+        public ImageSource Reel3DisplayImage { get; set; }
+
 
         public bool HasResult => !string.IsNullOrWhiteSpace(ResultMessage);
 
@@ -99,16 +103,63 @@ namespace KoteskiOlmesLB_426.ViewModels
             }
         }
 
-        private void Spin()
+        private async void Spin()
         {
             var player = Session.Instance.CurrentPlayer;
+
             if (!_game.IsGameRunning)
             {
                 _game.StartGame(player, SelectedBet);
             }
 
+            // Fake-Animation: für 500ms mehrere Symbole durchrotieren
+            for (int i = 0; i < 10; i++)
+            {
+                Reel1DisplayImage = GetRandomImage();
+                Reel2DisplayImage = GetRandomImage();
+                Reel3DisplayImage = GetRandomImage();
+                OnPropertyChanged(nameof(Reel1DisplayImage));
+                OnPropertyChanged(nameof(Reel2DisplayImage));
+                OnPropertyChanged(nameof(Reel3DisplayImage));
+                await Task.Delay(50);
+            }
+
+            // Jetzt echtes Ergebnis anzeigen
             _game.ExecuteAction("spin");
+
+            // Warten, bis GameStateChanged aktualisiert hat:
+            await Task.Delay(50);
+
+            Reel1DisplayImage = Reel1Image;
+            Reel2DisplayImage = Reel2Image;
+            Reel3DisplayImage = Reel3Image;
+            OnPropertyChanged(nameof(Reel1DisplayImage));
+            OnPropertyChanged(nameof(Reel2DisplayImage));
+            OnPropertyChanged(nameof(Reel3DisplayImage));
         }
+
+        private ImageSource GetRandomImage()
+        {
+            var values = Enum.GetValues(typeof(SlotSymbol)).Cast<SlotSymbol>().ToList();
+            var random = new Random();
+            var symbol = values[random.Next(values.Count)];
+            return GetImageFromSymbol(symbol);
+        }
+
+        private ImageSource GetImageFromSymbol(SlotSymbol symbol)
+        {
+            if (_symbolImagePaths.TryGetValue(symbol, out var path))
+            {
+                try
+                {
+                    var uri = new Uri($"pack://application:,,,/{path}", UriKind.Absolute);
+                    return new BitmapImage(uri);
+                }
+                catch { }
+            }
+            return null;
+        }
+
 
         private async void AutoSpin()
         {
