@@ -1,0 +1,25 @@
+﻿<Window x:Class="KoteskiOlmesLB_426.Views.GameLogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KoteskiOlmesLB_426.Views"
+        mc:Ignorable="d"
+        Title="Spielverlauf" Height="450" Width="750">
+
+    <Grid Margin="10">
+        <DataGrid ItemsSource="{Binding GameLogEntries}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Zeit" Binding="{Binding Timestamp}" Width="*"/>
+                <DataGridTextColumn Header="Spiel" Binding="{Binding GameMode}" Width="*"/>
+                <DataGridTextColumn Header="Ereignis" Binding="{Binding Message}" Width="2*"/>
+                <DataGridTextColumn Header="Einsatz" Binding="{Binding Bet}" Width="*"/>
+                <DataGridTextColumn Header="Gewinn" Binding="{Binding Win}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

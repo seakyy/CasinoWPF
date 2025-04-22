@@ -12,16 +12,15 @@ namespace KoteskiOlmesLB_426
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            /*
             base.OnStartup(e);
 
+            // Hauptfenster erzeugen und anzeigen
             var mainWindow = new MainWindow();
             mainWindow.Show();
 
-            // Navigate to the start page
-            mainWindow.MainFrame.Navigate(new StartPage());
-
-            */
+            // Spielverlauf-Fenster erzeugen und anzeigen
+            var logWindow = new GameLogWindow();
+            logWindow.Show();
         }
     }
 }
