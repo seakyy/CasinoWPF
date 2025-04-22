@@ -23,10 +23,9 @@ namespace KoteskiOlmesLB_426.Views
         public MainWindow()
         {
             InitializeComponent();
-
-            // Navigiere sofort zur StartPage
             MainFrame.Navigate(new StartPage());
         }
 
+       
     }
 }

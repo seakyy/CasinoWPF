@@ -183,6 +183,16 @@ namespace KoteskiOlmesLB_426.ViewModels
             ResultMessage = e.Message;
             Reels = new ObservableCollection<SlotSymbol>(_game.CurrentReels);
             Balance = Session.Instance.CurrentPlayer.Balance;
+
+            if (e.IsGameOver && e.Result is GameResult result)
+            {
+                GameLogService.Instance.AddEntry(
+                    GameType.SlotMachine,
+                    result.ResultDescription,
+                    result.BetAmount,
+                    result.WinAmount
+                );
+            }
         }
 
         private void OnNavigationRequested(string view)

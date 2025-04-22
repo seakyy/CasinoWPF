@@ -205,6 +205,16 @@ namespace KoteskiOlmesLB_426.ViewModels
             }
 
             UpdateGameState();
+
+            if (e.IsGameOver && e.Result is GameResult result)
+            {
+                GameLogService.Instance.AddEntry(
+                    GameType.SlotMachine,
+                    result.ResultDescription,
+                    result.BetAmount,
+                    result.WinAmount
+                );
+            }
         }
 
         private void OnNavigationRequested(string view)
