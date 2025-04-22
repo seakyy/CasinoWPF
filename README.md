@@ -1,6 +1,7 @@
 # 🎰 CasinoWPF
 DeadLine: 24.04.2025
-Notiz: Skizze ist nicht Up-to-Date
+
+Notiz: Skizze ist nicht Up-to-Date, wird noch aktualisiert
 
 Release: 20.04.2025
 
