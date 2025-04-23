@@ -1,105 +1,67 @@
+# 📁 Projektstruktur: CasinoWPF
+
+Visual Studio Projektstruktur zur Umsetzung der Casino-Applikation mit den Spielen **BlackJack** und **SlotMachine**. Das Projekt verwendet **WPF** und das **MVVM-Muster**.
+
+```plaintext
 /CasinoWPF
-├── App.xaml                    → Einstiegspunkt der WPF-App, definiert Ressourcen und Startfenster.
-|    └─ App.xaml.cs             → Code-Behind für App.xaml, Initialisierung der App. 
-├── AssemblyInfo.cs             → Metadaten zur Assembly (Version, Autor etc.).
+├── App.xaml                  → Einstiegspunkt der WPF-App, definiert Ressourcen und Startfenster
+├── App.xaml.cs              → Code-Behind für App.xaml, Initialisierung der App
+├── AssemblyInfo.cs          → Metadaten zur Assembly (Version, Autor etc.)
 │
-├── Models/                     → Datenmodelle und Spiel-Interfaces
-│   ├── Player.cs               → Enthält Jetons, evtl. Name des Spielers
-│   ├── GameResult.cs           → Ergebnis eines Spiels
-│   ├── Game.cs                 → Interface für alle Spiele
-│   └── Enums.cs                → z. B. Symboltypen, Spielergebnisse
+├── Models/                  → Datenmodelle für Spielmechaniken
+│   ├── Player.cs            → Enthält Guthaben (Jetons) und Spielerlogik
+│   ├── GameResult.cs        → Speichert Spielausgang, Gewinn, Einsatz usw.
+│   ├── Game.cs              → Interface für alle Spiele
+│   ├── Card.cs              → Datenstruktur für Spielkarten (BlackJack)
+│   └── Enums.cs             → Enum-Typen für Kartensymbole, Spielergebnisse, Spielarten
 │
-├── Services/                   → Zustands- und Spiellogikverwaltung
-│   ├── Session.cs              → Globale Spieler-Session (Singleton-artig)
-│   ├── GameManager.cs          → Verwaltet Spielstarts, Einsätze etc.
-│   ├── RelayCommand.cs         → Implementiert das Command-Pattern für WPF und ermöglicht so die Trennung von Benutzeroberfläche und Logik.
-│   └── Observer.cs             → Implementierung des Observer-Patterns
+├── Services/                → Verwaltung globaler Spielzustände
+│   ├── Session.cs           → Globale Spieler-Session (Singleton-artig)
+│   ├── GameManager.cs       → Zentrale Steuerung von Spielstarts & Einsätzen
+│   ├── RelayCommand.cs      → Umsetzung von ICommand für MVVM (Command Pattern)
+│   ├── Observer.cs          → Implementierung des Observer-Patterns
+│   └── GameLogService.cs    → Singleton für Protokollierung aller Spielverläufe
 │
-├── Views/                      → Alle WPF-Fenster (GUI)
-|   |           
-│   ├── MainWindow.xaml         → Startscreen mit Jetoneingabe
-|   |    └──MainWindow.xaml.cs 
-|   |
-│   ├── GameSelectionView.xaml  → Auswahl: Slotmachine oder BlackJack
-|   |    └── GameSelectionView.xaml.cs
-|   |
-│   ├── SlotMachineView.xaml    → UI für SlotMachine
-|   |    └──SlotMachineView.xaml.cs
-|   |
-│   ├── StartPage.xaml          → Startseite der App, z. B. mit "Spielen"-Button.
-|   |    └── StartPage.xaml.cs
-|   |
-│   └── BlackJackView.xaml      → UI für BlackJack
-|        └──BlackJackView.xaml.cs
+├── Views/                   → WPF Views (XAML) für die grafische Oberfläche
+│   ├── MainWindow.xaml      → Fenster mit Frame und Navigation
+│   ├── StartPage.xaml       → Startseite mit Jetoneingabe und Spielstart
+│   ├── GameSelectionView.xaml → Spielauswahlmenü
+│   ├── SlotMachineView.xaml → Benutzeroberfläche für SlotMachine
+│   ├── BlackJackView.xaml   → Benutzeroberfläche für BlackJack
+│   └── GameLogWindow.xaml   → Zweites Fenster zur Anzeige des Spielverlaufs
 │
-├── ViewModels/                 → MVVM-Implementierung
-│   ├── MainViewModel.cs        → Logik für MainWindow (z. B. Jetonhandling).
-│   ├── StartViewModel.cs       → Verbindet StartPage mit zugehöriger Logik.
-│   └── GameSelectionViewModel.cs → Logik für die Spielauswahl-View.
-│  
+├── ViewModels/              → ViewModels nach MVVM-Prinzip
+│   ├── MainViewModel.cs     → Jetonverwaltung, Initialzustand
+│   ├── StartViewModel.cs    → Logik für StartPage
+│   ├── GameSelectionViewModel.cs → Spielauswahl-Logik
+│   ├── SlotMachineViewModel.cs   → Spiel- und Spinlogik für SlotMachine
+│   └── BlackJackViewModel.cs     → Spiellogik, KI-Gegner, Punkteberechnung
 │
-├── Games/                      → Spielklassen, jeweils mit eigener Logik
-│   ├── SlotMachine.cs          → Spiel-Logik für Slotmachine
-│   ├── BlackJack.cs            → Spiel-Logik für BlackJack
-│   └── GameFactory.cs          → Factory Pattern für die Erstellung von Spielen
+├── Games/                   → Eigentliche Spiel-Implementierungen
+│   ├── SlotMachine.cs       → Spielregeln, Zufallslogik & Auszahlungen
+│   ├── BlackJack.cs         → Kartenlogik, Spieleraktionen (hit, stand, doubledown)
+│   └── GameFactory.cs       → Factory zur Erstellung von Spielinstanzen
 │
-├── Resources/ (optional)       → Icons, Bilder, Sounds, Styles etc.
-│   └── casino-logo.png         → Bild für den Start der Applikation
+├── Resources/               → Icons, Bilder und statische Inhalte
+│   ├── Cherry.jpg, Lemon.jpg, ... → Symbole für SlotMachine
+│   └── casino-logo.png      → Logo für Startbildschirm
 │
-└── ToDo/                       → Nächste Schritte für die Entwicklung
-    └── NextSteps.md            → Beschreibung der nächsten Aufgaben
+├── Tests/                   → Unit Tests (TDD)
+│   ├── SlotMachineTest.cs   → Tests für SlotMachine-Logik (Start, Gewinn, Spin)
+│   └── BlackJackTest.cs     → Tests für BlackJack-Abläufe (Hit, DoubleDown)
+│
+└── .github/workflows/
+    └── dotnet.yml           → GitHub Actions Workflow für CI (Build + Test)
+```
 
-    # Nächste Schritte für die Casino-App
+---
 
-## 1. Navigation implementieren
-- Code-Behind für Views erstellen
-- Navigation zwischen den Seiten implementieren
-- MainWindow als Frame-Container konfigurieren
+📦 **Technologien:** WPF, .NET 8.0, MVVM, MSTest, GitHub Actions
 
-## 2. ViewModels vervollständigen
-- GameSelectionViewModel implementieren
-- SlotMachineViewModel vervollständigen
-- BlackJackViewModel vervollständigen
-- Binding zwischen ViewModels und Views konfigurieren
+🧪 **TDD umgesetzt:** Ja → SlotMachine & BlackJack Tests
 
-## 3. UI-Design verbessern
-- Hellgrauen Hintergrund für alle Seiten einstellen
-- Gemeinsame Styles in ResourceDictionary auslagern
-- Kartenbilder für BlackJack hinzufügen
-- Symbole für SlotMachine hinzufügen (anstelle von Textdarstellung)
+🔄 **CI/CD:** Automatisch über GitHub bei jedem Push auf `main`
 
-## 4. Datenpersistenz hinzufügen
-- Spielerstatistiken implementieren (Gewinne, Verluste, etc.)
-- Highscore-Liste hinzufügen
-- Speicherung des Spielerstandes in XML/JSON-Datei
+📝 **Erweiterbar um:** weitere Spiele, Adminpanel, Highscore, Spielerprofil, Persistenz (Datenbank)
 
-## 5. Spiellogik erweitern
-- Zusätzliche Funktionen für BlackJack hinzufügen (Split, Insurance)
-- Spezielle Gewinnlinien für SlotMachine implementieren (Diagonalen, etc.)
-- Jackpot-Funktion für SlotMachine hinzufügen
-
-## 6. Soundeffekte hinzufügen
-- Hintergrundmusik
-- Effekte für Gewinn/Verlust
-- Kartengeräusche für BlackJack
-- Walzengeräusche für SlotMachine
-
-## 7. Animationen implementieren
-- Kartenverteilungsanimation für BlackJack
-- Walzendrehanimation für SlotMachine
-- Übergangsanimationen zwischen Bildschirmen
-
-## 8. Testing
-- Unit-Tests für die Spiellogik erstellen
-- UI-Tests für die Benutzeroberfläche erstellen
-- Spielbalance testen und anpassen
-
-## 9. Dokumentation
-- Code-Kommentare vervollständigen
-- Benutzeranleitung erstellen
-- Klassendiagramm aktualisieren
-
-## 10. Erweiterungen für die Zukunft
-- Weitere Spiele hinzufügen (Poker, Roulette)
-- Mehrspieler-Modus implementieren
-- Optionale Online-Funktionen (z.B. globale Highscores)
+---
