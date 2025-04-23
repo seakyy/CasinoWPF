@@ -20,10 +20,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore src/KoteskiOlmesLB-426.sln
+      run: dotnet restore
+      working-directory: src/KoteskiOlmesLB-426
 
     - name: Build solution
-      run: dotnet build src/KoteskiOlmesLB-426.sln --no-restore --configuration Release
+      run: dotnet build --no-restore --configuration Release
+      working-directory: src/KoteskiOlmesLB-426
 
     - name: Run tests
-      run: dotnet test src/KoteskiOlmesLB-426.sln --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
+      working-directory: src/KoteskiOlmesLB-426
