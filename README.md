@@ -1,41 +1,69 @@
-# 🎰 CasinoWPF
-DeadLine: 24.04.2025
+# CasinoWPF – Digitale Spielsimulation in WPF
 
-Notiz: Skizze ist nicht Up-to-Date, wird noch aktualisiert
+**Abgabetermin:** 24.04.2025  
+**Projektstart / Release:** 20.04.2025
 
-Release: 20.04.2025
-
-Ein WPF-Projekt in C# zur Simulation eines kleinen digitalen Casinos mit zwei Spielen:
-- **SlotMachine** 🎰
-- **BlackJack** 🃏
-
-## 🛠 Features
-- Start mit Eingabe eines frei wählbaren Geldbetrags (in Jetons umgewandelt)
-- Auswahl zwischen zwei Spielen: SlotMachine & BlackJack
-- Einsätze und Gewinne je nach Spielmechanik
-- Zurück zur Spielauswahl nach jeder Runde
-- Modular aufgebaut: neue Spiele können leicht ergänzt werden
-
-## 📁 Projektstruktur
-```
-/Models       → Datenmodelle & Interfaces
-/Views        → GUI-Fenster (WPF-XAML)
-/Games        → Spielimplementierungen (z. B. SlotMachine.cs)
-/Services     → Zustandsverwaltung & Helfer
-/ViewModels   → (Optional, für MVVM)
-```
-
-## ▶️ Starten
-1. Öffne die `.sln`-Datei in Visual Studio
-2. Starte die Anwendung mit `F5`
-3. Gib deinen Startbetrag ein
-4. Wähle ein Spiel und hab Spaß!
-
-## ➕ Erweiterungsideen
-- Highscore-System
-- Weitere Spiele (z. B. Poker, Roulette)
-- Statistikseite mit Spielhistorie
-- Soundeffekte & Animationen
+Ein C#-Projekt auf Basis von **.NET 8.0** und **WPF**, welches zwei klassische Casino-Spiele simuliert: **SlotMachine** und **BlackJack**. Das Projekt folgt dem **MVVM-Architekturprinzip** und wurde mit **agilen Methoden** umgesetzt. Sämtliche Spiellogik, Oberfläche und Benutzerinteraktionen sind modular entworfen, sodass zukünftige Erweiterungen leicht möglich sind.
 
 ---
-Entwickelt mit ❤️ für eine Informatikprojektarbeit mit agilen Methoden.
+
+## Projektübersicht
+
+- Auswahl zwischen zwei Casino-Spielen: **SlotMachine** und **BlackJack**
+- Startbetrag frei wählbar → wird in Jetons umgewandelt
+- Spielverlauf wird im separaten Fenster protokolliert (GameLog)
+- Einsätze & Gewinne gemäß Regelwerk
+- Rückkehr zur Spielauswahl nach jeder Runde
+- Projektziel: Modulare, testbare & CI-gestützte Anwendung
+
+---
+
+## Technische Merkmale
+
+- **Technologie:** .NET 8.0 (WPF), C#
+- **Architektur:** MVVM mit Commands, Services & Observer Pattern
+- **Testabdeckung:** MSTest UnitTests für SlotMachine & BlackJack
+- **CI/CD:** GitHub Actions mit Build & Test Workflow
+
+---
+
+## Projektstruktur (Ausschnitt)
+
+```plaintext
+/src
+├── KoteskiOlmesLB-426
+│   ├── Models/           → Spieler, Karten, Spielresultate
+│   ├── Games/            → SlotMachine.cs, BlackJack.cs
+│   ├── Services/         → Session, GameManager, GameLogService
+│   ├── ViewModels/       → Steuerung der Views (z. B. SlotMachineViewModel)
+│   └── Views/            → WPF-XAML-Views (z. B. BlackJackView.xaml)
+│
+├── KoteskiOlmesLB-426-Tests
+│   ├── SlotMachineTest.cs
+│   └── BlackJackTest.cs
+│
+└── .github/workflows/dotnet.yml → CI/CD-Workflow für Build & Test
+```
+
+---
+
+## Projektstart
+
+1. Repository klonen
+2. Visual Studio öffnen und die Lösung laden:  
+   `src/KoteskiOlmesLB-426/KoteskiOlmesLB-426.sln`
+3. Mit `F5` ausführen
+4. Startbetrag eingeben und Spiel wählen
+
+---
+
+## Weiterentwicklungsmöglichkeiten
+
+- Erweiterung um zusätzliche Spiele (z. B. Roulette, Poker)
+- Einführung von Benutzerprofilen und Highscore
+- Persistenz durch Datenbankanbindung
+- Visuelle Animationen und akustisches Feedback
+
+---
+
+Dieses Projekt wurde im Rahmen einer schulischen Arbeit nach agilen Prinzipien konzipiert und umgesetzt.
