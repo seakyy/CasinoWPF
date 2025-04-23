@@ -209,7 +209,7 @@ namespace KoteskiOlmesLB_426.ViewModels
             if (e.IsGameOver && e.Result is GameResult result)
             {
                 GameLogService.Instance.AddEntry(
-                    GameType.SlotMachine,
+                    GameType.BlackJack,
                     result.ResultDescription,
                     result.BetAmount,
                     result.WinAmount
