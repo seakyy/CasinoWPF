@@ -68,7 +68,7 @@ namespace KoteskiOlmesLB_426.Views
                 "• Plum 🍑 → 3x\n" +
                 "• Bell 🔔 → 4x\n" +
                 "• Bar 🟦 → 5x\n" +
-                "• Seven 7️⃣ → 10x\n" +
+                "• Seven 7️ → 10x\n" +
                 "• Diamond 💎 → 15x",
                 "AutoSpin & Gewinnquoten",
                 MessageBoxButton.OK,

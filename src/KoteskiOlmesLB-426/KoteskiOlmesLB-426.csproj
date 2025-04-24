@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+  <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <RootNamespace>KoteskiOlmesLB_426</RootNamespace>
@@ -10,11 +11,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Bar.jpg" />
+    <None Remove="Resources\Bell.jpg" />
+    <None Remove="Resources\casino_logo.png" />
+    <None Remove="Resources\Cherry.jpg" />
+    <None Remove="Resources\Diamond.jpg" />
+    <None Remove="Resources\Lemon.jpg" />
+    <None Remove="Resources\Orange.jpg" />
+    <None Remove="Resources\Plum.jpg" />
+    <None Remove="Resources\Seven.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Bar.jpg" />
+    <Resource Include="Resources\Bell.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\casino_logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Cherry.jpg" />
+    <Resource Include="Resources\Diamond.jpg" />
+    <Resource Include="Resources\Lemon.jpg" />
+    <Resource Include="Resources\Orange.jpg" />
+    <Resource Include="Resources\Plum.jpg" />
+    <Resource Include="Resources\Seven.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Compile Update="Services\GameLog.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+    <Compile Update="ViewModels\StartViewModel.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+    <Compile Update="Views\GameLogWindow.xaml.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
   </ItemGroup>
 
 </Project>
