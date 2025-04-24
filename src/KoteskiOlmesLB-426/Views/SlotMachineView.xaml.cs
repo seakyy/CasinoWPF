@@ -76,6 +76,14 @@ namespace KoteskiOlmesLB_426.Views
             );
         }
 
+        private void OpenFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            var feedbackWindow = new FeedbackWindow();
+            feedbackWindow.ShowDialog();
+        }
+
+
+
 
     }
 }
