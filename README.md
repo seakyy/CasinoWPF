@@ -1,7 +1,7 @@
 # CasinoWPF – Digitale Spielsimulation in WPF
 
 **Abgabetermin:** 24.04.2025  
-**Projektstart / Release:** 20.04.2025
+**Projektstart** 03.04.2025 **/ Release:** 25.04.2025
 
 Ein C#-Projekt auf Basis von **.NET 8.0** und **WPF**, welches zwei klassische Casino-Spiele simuliert: **SlotMachine** und **BlackJack**. Das Projekt folgt dem **MVVM-Architekturprinzip** und wurde mit **agilen Methoden** umgesetzt. Sämtliche Spiellogik, Oberfläche und Benutzerinteraktionen sind modular entworfen, sodass zukünftige Erweiterungen leicht möglich sind.
 
