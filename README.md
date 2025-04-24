@@ -23,7 +23,7 @@ Ein C#-Projekt auf Basis von **.NET 8.0** und **WPF**, welches zwei klassische C
 - **Technologie:** .NET 8.0 (WPF), C#
 - **Architektur:** MVVM mit Commands, Services & Observer Pattern
 - **Testabdeckung:** MSTest UnitTests für SlotMachine & BlackJack
-- **CI/CD:** GitHub Actions mit Build & Test Workflow
+- **CI/CD:** GitHub Actions / GitLab CI/CD mit Build & Test Workflow
 
 ---
 
