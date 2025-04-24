@@ -42,14 +42,10 @@ namespace KoteskiOlmesLB_426.Views
             }
         }
 
-        private void HitButton_Click(object sender, RoutedEventArgs e)
+        private void OpenFeedback_Click(object sender, RoutedEventArgs e)
         {
-            // Add logic for hitting in Black Jack
-        }
-
-        private void StandButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Add logic for standing in Black Jack
+            var feedbackWindow = new FeedbackWindow();
+            feedbackWindow.ShowDialog();
         }
     }
 }

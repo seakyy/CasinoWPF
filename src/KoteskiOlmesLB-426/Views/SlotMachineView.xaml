@@ -249,6 +249,14 @@
                     Foreground="White" 
                     Padding="10,5" 
                     Margin="5"/>
+
+            <Button Content="💬 Feedback"
+                    Click="OpenFeedback_Click"
+                    Background="DeepSkyBlue"
+                    Foreground="White"
+                    Padding="10,5"
+                    Margin="5"
+                    HorizontalAlignment="Right"/>
         </StackPanel>
     </Grid>
 </Page>
