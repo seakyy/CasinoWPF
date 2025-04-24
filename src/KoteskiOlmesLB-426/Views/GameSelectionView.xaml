@@ -82,29 +82,29 @@
                                    Foreground="White"/>
 
                         <StackPanel Grid.Row="1" Margin="10">
-                            <TextBlock Text="Ziel: Bringe drei gleiche Symbole in einer Reihe, um zu gewinnen." 
+                            <TextBlock Text="Ziel: Komme möglichst nah an die Zahl 21! Überschreite sie jedoch nicht!" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,10" 
+                                       Margin="0,7" 
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Drei Walzen mit verschiedenen Symbolen" 
+                            <TextBlock Text="• Computergegner (1–5 wählbar)" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5" 
+                                       Margin="0,2" 
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Verschiedene Symbole haben unterschiedliche Gewinnquoten" 
+                            <TextBlock Text="• Gewinn hängt von Gegneranzahl und Einsatz ab" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5" 
+                                       Margin="0,2" 
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Drei 7er bringen den Jackpot!" 
+                            <TextBlock Text="• Kartenregeln (Zahlen, Bildkarten, Ass)" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5" 
+                                       Margin="0,2" 
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Gewinnquoten: 2x bis 10x je nach Symbol" 
+                            <TextBlock Text="• Gewinnquoten: Basis 2x, +0.5x pro Gegner" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5" 
+                                       Margin="0,2" 
                                        Foreground="White"/>
                         </StackPanel>
 
@@ -141,28 +141,31 @@
                         <StackPanel Grid.Row="1" Margin="10">
                             <TextBlock Text="Ziel: Bringe drei gleiche Symbole in einer Reihe, um zu gewinnen." 
                                        TextWrapping="Wrap" 
-                                       Margin="0,10"
+                                       Margin="0,7"
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Drei Walzen mit verschiedenen Symbolen" 
+                            <TextBlock Text="• Fixer Einsatz" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5"
+                                       Margin="0,2"
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Verschiedene Symbole haben unterschiedliche Gewinnquoten" 
+                            <TextBlock Text="• Symbole mit 2x–15x Gewinn" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5"
+                                       Margin="0,2"
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Drei 7er bringen den Jackpot!" 
+                            <TextBlock Text="• 3 gleiche Symbole = Gewinn" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5"
+                                       Margin="0,2"
                                        Foreground="White"/>
 
-                            <TextBlock Text="• Gewinnquoten: 2x bis 10x je nach Symbol" 
+
+                            <TextBlock Text="• 3 Diamanten bringen den Jackpot!" 
                                        TextWrapping="Wrap" 
-                                       Margin="0,5"
+                                       Margin="0,2"
                                        Foreground="White"/>
+
+                            
                         </StackPanel>
 
                         <Button Grid.Row="2" 

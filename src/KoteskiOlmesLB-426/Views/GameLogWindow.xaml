@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KoteskiOlmesLB_426.Views"
         mc:Ignorable="d"
-        Title="Spielverlauf" Height="450" Width="750">
+        Title="Spielverlauf" Height="450" Width="800">
 
     <Grid Margin="10">
         <DataGrid ItemsSource="{Binding GameLogEntries}"

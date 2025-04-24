@@ -55,5 +55,27 @@ namespace KoteskiOlmesLB_426.Views
             storyboard.Begin();
         }
 
+        private void AutoSpinInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "🎰 AutoSpin Anleitung:\n" +
+                "• 1x drücken = AutoSpin startet\n" +
+                "• erneut drücken = AutoSpin stoppt\n\n" +
+                "💎 Gewinnquoten der Symbole:\n" +
+                "• Cherry 🍒 → 2x\n" +
+                "• Lemon 🍋 → 2x\n" +
+                "• Orange 🍊 → 3x\n" +
+                "• Plum 🍑 → 3x\n" +
+                "• Bell 🔔 → 4x\n" +
+                "• Bar 🟦 → 5x\n" +
+                "• Seven 7️⃣ → 10x\n" +
+                "• Diamond 💎 → 15x",
+                "AutoSpin & Gewinnquoten",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
+        }
+
+
     }
 }
