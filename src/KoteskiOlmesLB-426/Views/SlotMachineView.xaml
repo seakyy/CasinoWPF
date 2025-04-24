@@ -219,6 +219,14 @@
                         Command="{Binding AutoSpinCommand}" 
                         Background="#3498DB" 
                         Foreground="Black" 
+                        Margin="0,0,10,0"
+                        Padding="10,5"/>
+
+                <Button Content="ℹ️"
+                        ToolTip="Anleitung zu AutoSpin und Symbolgewinnen anzeigen"
+                        Click="AutoSpinInfo_Click"
+                        Background="SkyBlue"
+                        Foreground="Black"
                         Padding="10,5"/>
             </StackPanel>
         </Grid>
