@@ -1,0 +1,26 @@
+stages:
+  - build
+  - test
+
+variables:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  CONFIGURATION: Release
+  SOLUTION_PATH: src/KoteskiOlmesLB-426/KoteskiOlmesLB-426.sln
+
+before_script:
+  - export PATH="$PATH:$HOME/.dotnet/tools"
+  - dotnet --version
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  script:
+    - dotnet restore "$SOLUTION_PATH"
+    - dotnet build "$SOLUTION_PATH" --no-restore --configuration $CONFIGURATION /p:EnableWindowsTargeting=true
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  script:
+    - dotnet test "$SOLUTION_PATH" --no-build --configuration $CONFIGURATION --verbosity normal /p:EnableWindowsTargeting=true
