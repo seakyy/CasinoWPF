@@ -7,19 +7,36 @@
         mc:Ignorable="d"
         Title="Spielverlauf" Height="450" Width="800">
 
-    <Grid Margin="10">
+    <DockPanel Margin="10">
+        <!-- Kopfzeile mit Button -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
+            <Button Content="📥 Spielverlauf speichern"
+                    Click="SaveGameLog_Click"
+                    Background="#27AE60"
+                    Foreground="White"
+                    Padding="10,5"
+                    FontWeight="SemiBold"
+                    BorderBrush="#1E8449"
+                    BorderThickness="1"
+                    Cursor="Hand"
+                    Margin="0,0,0,5"/>
+        </StackPanel>
+
+        <!-- Tabelle -->
         <DataGrid ItemsSource="{Binding GameLogEntries}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
                   HeadersVisibility="Column"
-                  CanUserAddRows="False">
+                  CanUserAddRows="False"
+                  GridLinesVisibility="Horizontal"
+                  RowHeaderWidth="0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Zeit" Binding="{Binding Timestamp}" Width="*"/>
-                <DataGridTextColumn Header="Spiel" Binding="{Binding GameMode}" Width="*"/>
-                <DataGridTextColumn Header="Ereignis" Binding="{Binding Message}" Width="2*"/>
-                <DataGridTextColumn Header="Einsatz" Binding="{Binding Bet}" Width="*"/>
-                <DataGridTextColumn Header="Gewinn" Binding="{Binding Win}" Width="*"/>
+                <DataGridTextColumn Header="🕒 Zeit" Binding="{Binding Timestamp}" Width="*"/>
+                <DataGridTextColumn Header="🎮 Spiel" Binding="{Binding GameMode}" Width="*"/>
+                <DataGridTextColumn Header="📄 Ereignis" Binding="{Binding Message}" Width="2*"/>
+                <DataGridTextColumn Header="💰 Einsatz" Binding="{Binding Bet}" Width="*"/>
+                <DataGridTextColumn Header="🏆 Gewinn" Binding="{Binding Win}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-    </Grid>
+    </DockPanel>
 </Window>
