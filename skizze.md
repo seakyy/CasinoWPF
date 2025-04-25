@@ -1,67 +1,67 @@
-# 📁 Projektstruktur: CasinoWPF
+# 📁 Project Structure: CasinoWPF
 
-Visual Studio Projektstruktur zur Umsetzung der Casino-Applikation mit den Spielen **BlackJack** und **SlotMachine**. Das Projekt verwendet **WPF** und das **MVVM-Muster**.
+Visual Studio project structure for the implementation of the Casino application featuring **BlackJack** and **SlotMachine**. The project uses **WPF** and the **MVVM pattern**.
 
 ```plaintext
 /CasinoWPF
-├── App.xaml                  → Einstiegspunkt der WPF-App, definiert Ressourcen und Startfenster
-├── App.xaml.cs              → Code-Behind für App.xaml, Initialisierung der App
-├── AssemblyInfo.cs          → Metadaten zur Assembly (Version, Autor etc.)
+├── App.xaml                  → Entry point of the WPF app, defines resources and startup window
+├── App.xaml.cs              → Code-behind for App.xaml, initializes the application
+├── AssemblyInfo.cs          → Assembly metadata (version, author, etc.)
 │
-├── Models/                  → Datenmodelle für Spielmechaniken
-│   ├── Player.cs            → Enthält Guthaben (Jetons) und Spielerlogik
-│   ├── GameResult.cs        → Speichert Spielausgang, Gewinn, Einsatz usw.
-│   ├── Game.cs              → Interface für alle Spiele
-│   ├── Card.cs              → Datenstruktur für Spielkarten (BlackJack)
-│   └── Enums.cs             → Enum-Typen für Kartensymbole, Spielergebnisse, Spielarten
+├── Models/                  → Data models for game logic
+│   ├── Player.cs            → Holds balance (chips) and player logic
+│   ├── GameResult.cs        → Stores game outcome, winnings, bet info
+│   ├── Game.cs              → Interface for all games
+│   ├── Card.cs              → Data structure for playing cards (BlackJack)
+│   └── Enums.cs             → Enum types for card symbols, outcomes, game modes
 │
-├── Services/                → Verwaltung globaler Spielzustände
-│   ├── Session.cs           → Globale Spieler-Session (Singleton-artig)
-│   ├── GameManager.cs       → Zentrale Steuerung von Spielstarts & Einsätzen
-│   ├── RelayCommand.cs      → Umsetzung von ICommand für MVVM (Command Pattern)
-│   ├── Observer.cs          → Implementierung des Observer-Patterns
-│   └── GameLogService.cs    → Singleton für Protokollierung aller Spielverläufe
+├── Services/                → Manages global game state
+│   ├── Session.cs           → Global player session (singleton-like)
+│   ├── GameManager.cs       → Core control for game launch & bets
+│   ├── RelayCommand.cs      → ICommand implementation for MVVM (Command Pattern)
+│   ├── Observer.cs          → Observer pattern implementation
+│   └── GameLogService.cs    → Singleton for logging game activity
 │
-├── Views/                   → WPF Views (XAML) für die grafische Oberfläche
-│   ├── MainWindow.xaml      → Fenster mit Frame und Navigation
-│   ├── StartPage.xaml       → Startseite mit Jetoneingabe und Spielstart
-│   ├── GameSelectionView.xaml → Spielauswahlmenü
-│   ├── SlotMachineView.xaml → Benutzeroberfläche für SlotMachine
-│   ├── BlackJackView.xaml   → Benutzeroberfläche für BlackJack
-│   └── GameLogWindow.xaml   → Zweites Fenster zur Anzeige des Spielverlaufs
+├── Views/                   → WPF Views (XAML) for the graphical UI
+│   ├── MainWindow.xaml      → Frame container and navigation
+│   ├── StartPage.xaml       → Landing screen with chip input and start
+│   ├── GameSelectionView.xaml → Game selection menu
+│   ├── SlotMachineView.xaml → SlotMachine user interface
+│   ├── BlackJackView.xaml   → BlackJack user interface
+│   └── GameLogWindow.xaml   → Secondary window for viewing game log
 │
-├── ViewModels/              → ViewModels nach MVVM-Prinzip
-│   ├── MainViewModel.cs     → Jetonverwaltung, Initialzustand
-│   ├── StartViewModel.cs    → Logik für StartPage
-│   ├── GameSelectionViewModel.cs → Spielauswahl-Logik
-│   ├── SlotMachineViewModel.cs   → Spiel- und Spinlogik für SlotMachine
-│   └── BlackJackViewModel.cs     → Spiellogik, KI-Gegner, Punkteberechnung
+├── ViewModels/              → MVVM ViewModels
+│   ├── MainViewModel.cs     → Manages initial balance and startup state
+│   ├── StartViewModel.cs    → Logic for StartPage
+│   ├── GameSelectionViewModel.cs → Logic for selecting a game
+│   ├── SlotMachineViewModel.cs   → SlotMachine logic and spin handling
+│   └── BlackJackViewModel.cs     → Game logic, AI opponents, scoring
 │
-├── Games/                   → Eigentliche Spiel-Implementierungen
-│   ├── SlotMachine.cs       → Spielregeln, Zufallslogik & Auszahlungen
-│   ├── BlackJack.cs         → Kartenlogik, Spieleraktionen (hit, stand, doubledown)
-│   └── GameFactory.cs       → Factory zur Erstellung von Spielinstanzen
+├── Games/                   → Game implementations
+│   ├── SlotMachine.cs       → Game rules, random logic & payouts
+│   ├── BlackJack.cs         → Card logic, player actions (hit, stand, double down)
+│   └── GameFactory.cs       → Factory for creating game instances
 │
-├── Resources/               → Icons, Bilder und statische Inhalte
-│   ├── Cherry.jpg, Lemon.jpg, ... → Symbole für SlotMachine
-│   └── casino-logo.png      → Logo für Startbildschirm
+├── Resources/               → Icons, images, and static content
+│   ├── Cherry.jpg, Lemon.jpg, ... → SlotMachine symbols
+│   └── casino-logo.png      → Logo for start screen
 │
-├── Tests/                   → Unit Tests (TDD)
-│   ├── SlotMachineTest.cs   → Tests für SlotMachine-Logik (Start, Gewinn, Spin)
-│   └── BlackJackTest.cs     → Tests für BlackJack-Abläufe (Hit, DoubleDown)
+├── Tests/                   → Unit tests (TDD)
+│   ├── SlotMachineTest.cs   → Tests for SlotMachine logic (start, win, spin)
+│   └── BlackJackTest.cs     → Tests for BlackJack (hit, double down)
 │
 └── .github/workflows/
-    └── dotnet.yml           → GitHub Actions Workflow für CI (Build + Test)
+    └── dotnet.yml           → GitHub Actions CI workflow (build + test)
 ```
 
 ---
 
-📦 **Technologien:** WPF, .NET 8.0, MVVM, MSTest, GitHub Actions
+📦 **Technologies:** WPF, .NET 8.0, MVVM, MSTest, GitHub Actions
 
-🧪 **TDD umgesetzt:** Ja → SlotMachine & BlackJack Tests
+🧪 **TDD Applied:** Yes → SlotMachine & BlackJack logic covered
 
-🔄 **CI/CD:** Automatisch über GitHub bei jedem Push auf `main`
+🔄 **CI/CD:** Automated via GitHub Actions on every `main` push
 
-📝 **Erweiterbar um:** weitere Spiele, Adminpanel, Highscore, Spielerprofil, Persistenz (Datenbank)
+📝 **Future Extensions:** Additional games, admin panel, highscore tracking, player profiles, persistence (DB)
 
 ---
