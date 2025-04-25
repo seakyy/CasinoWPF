@@ -28,5 +28,5 @@ jobs:
       working-directory: src/KoteskiOlmesLB-426
 
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --configuration Debug --verbosity normal
       working-directory: src/KoteskiOlmesLB-426
