@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="Casino Royale" Height="720" Width="920"
         WindowStartupLocation="CenterScreen"
-        Background="#E0E0E0">
+        Background="#E0E0E0"
+        Closed="Window_Closed">
 
     <!-- Ressourcen für Stile -->
     <Window.Resources>

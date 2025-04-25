@@ -4,6 +4,8 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoteskiOlmesLB-426", "KoteskiOlmesLB-426.csproj", "{B4510C9F-7711-4CD4-8859-87283E1046F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoteskiOlmesLB-426-Tests", "..\KoteskiOlmesLB-426-Tests\KoteskiOlmesLB-426-Tests.csproj", "{BBB3C630-1491-490F-B9A0-950FA7A1EF4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,10 @@ Global
 		{B4510C9F-7711-4CD4-8859-87283E1046F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4510C9F-7711-4CD4-8859-87283E1046F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4510C9F-7711-4CD4-8859-87283E1046F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB3C630-1491-490F-B9A0-950FA7A1EF4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB3C630-1491-490F-B9A0-950FA7A1EF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB3C630-1491-490F-B9A0-950FA7A1EF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB3C630-1491-490F-B9A0-950FA7A1EF4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
