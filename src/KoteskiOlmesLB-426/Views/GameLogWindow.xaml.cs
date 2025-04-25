@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using KoteskiOlmesLB_426.Services;
 
 namespace KoteskiOlmesLB_426.Views
@@ -9,8 +10,10 @@ namespace KoteskiOlmesLB_426.Views
         public GameLogWindow()
         {
             InitializeComponent();
-            DataContext = GameLogService.Instance;
+
+            this.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/game_log_icon.ico"));
         }
+
 
         private void SaveGameLog_Click(object sender, RoutedEventArgs e)
         {
@@ -33,7 +36,5 @@ namespace KoteskiOlmesLB_426.Views
                 MessageBox.Show("Spielverlauf gespeichert!", "Export erfolgreich", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
     }
 }
-

@@ -11,15 +11,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="app_icon.ico" />
+    <None Remove="Resources\app_icon.ico" />
     <None Remove="Resources\Bar.jpg" />
     <None Remove="Resources\Bell.jpg" />
     <None Remove="Resources\casino_logo.png" />
     <None Remove="Resources\Cherry.jpg" />
     <None Remove="Resources\Diamond.jpg" />
+    <None Remove="Resources\game_log_icon.ico" />
     <None Remove="Resources\Lemon.jpg" />
     <None Remove="Resources\Orange.jpg" />
     <None Remove="Resources\Plum.jpg" />
     <None Remove="Resources\Seven.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app_icon.ico" />
+    <Resource Include="Resources\app_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,11 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\casino_logo.png">
+    <Resource Include="Resources\casino_logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Resource>
     <Resource Include="Resources\Cherry.jpg" />
     <Resource Include="Resources\Diamond.jpg" />
+    <Resource Include="Resources\game_log_icon.ico" />
     <Resource Include="Resources\Lemon.jpg" />
     <Resource Include="Resources\Orange.jpg" />
     <Resource Include="Resources\Plum.jpg" />

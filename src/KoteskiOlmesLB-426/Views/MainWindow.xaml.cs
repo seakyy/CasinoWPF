@@ -24,8 +24,21 @@ namespace KoteskiOlmesLB_426.Views
         {
             InitializeComponent();
             MainFrame.Navigate(new StartPage());
+            try
+            {
+                this.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/app_icon.ico"
+                ));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim Setzen des Icons: " + ex.Message);
+            }
         }
 
-       
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown(); 
+        }
+
     }
 }
