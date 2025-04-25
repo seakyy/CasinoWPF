@@ -11,9 +11,15 @@ namespace KoteskiOlmesLB_426.Views
         {
             InitializeComponent();
 
-            this.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/game_log_icon.ico"));
-        }
-
+            try
+            {
+                this.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/game_log_icon.ico"));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it gracefully
+                MessageBox.Show($"Failed to load the window icon: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         private void SaveGameLog_Click(object sender, RoutedEventArgs e)
         {
