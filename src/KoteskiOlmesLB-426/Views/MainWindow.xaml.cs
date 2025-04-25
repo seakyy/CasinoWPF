@@ -31,7 +31,11 @@ namespace KoteskiOlmesLB_426.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Fehler beim Setzen des Icons: " + ex.Message);
+#if DEBUG
+                Console.WriteLine("Error setting the window icon: " + ex.Message);
+#else
+                // Log the error or suppress it in production
+#endif
             }
         }
 
