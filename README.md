@@ -1,69 +1,69 @@
-# CasinoWPF – Digitale Spielsimulation in WPF
+# CasinoWPF – Digital Casino Simulation with WPF
 
-**Abgabetermin:** 24.04.2025  
-**Projektstart** 03.04.2025 **/ Release:** 25.04.2025
+**Submission Deadline:** April 24, 2025  
+**Project Start:** April 3, 2025 **/ Release:** April 25, 2025
 
-Ein C#-Projekt auf Basis von **.NET 8.0** und **WPF**, welches zwei klassische Casino-Spiele simuliert: **SlotMachine** und **BlackJack**. Das Projekt folgt dem **MVVM-Architekturprinzip** und wurde mit **agilen Methoden** umgesetzt. Sämtliche Spiellogik, Oberfläche und Benutzerinteraktionen sind modular entworfen, sodass zukünftige Erweiterungen leicht möglich sind.
-
----
-
-## Projektübersicht
-
-- Auswahl zwischen zwei Casino-Spielen: **SlotMachine** und **BlackJack**
-- Startbetrag frei wählbar → wird in Jetons umgewandelt
-- Spielverlauf wird im separaten Fenster protokolliert (GameLog)
-- Einsätze & Gewinne gemäß Regelwerk
-- Rückkehr zur Spielauswahl nach jeder Runde
-- Projektziel: Modulare, testbare & CI-gestützte Anwendung
+A C# project based on **.NET 8.0** and **WPF**, simulating two classic casino games: **Slot Machine** and **BlackJack**. The project follows the **MVVM architectural pattern** and was developed using **agile methods**. All game logic, UI, and user interactions are modular and extensible for future updates.
 
 ---
 
-## Technische Merkmale
+## Project Overview
 
-- **Technologie:** .NET 8.0 (WPF), C#
-- **Architektur:** MVVM mit Commands, Services & Observer Pattern
-- **Testabdeckung:** MSTest UnitTests für SlotMachine & BlackJack
-- **CI/CD:** GitHub Actions / GitLab CI/CD mit Build & Test Workflow
+- Choice between two casino games: **Slot Machine** and **BlackJack**
+- User-defined starting amount, converted to virtual chips
+- Game history is tracked in a separate log window (GameLog)
+- Bets & winnings follow defined rulesets
+- Return to game selection after each round
+- Project goal: Modular, testable, and CI-supported application
 
 ---
 
-## Projektstruktur (Ausschnitt)
+## Technical Features
+
+- **Technology:** .NET 8.0 (WPF), C#
+- **Architecture:** MVVM with Commands, Services & Observer Pattern
+- **Test Coverage:** MSTest UnitTests for SlotMachine & BlackJack
+- **CI/CD:** GitHub Actions / GitLab CI/CD with Build & Test Workflow
+
+---
+
+## Project Structure (Excerpt)
 
 ```plaintext
 /src
 ├── KoteskiOlmesLB-426
-│   ├── Models/           → Spieler, Karten, Spielresultate
+│   ├── Models/           → Players, Cards, Game Results
 │   ├── Games/            → SlotMachine.cs, BlackJack.cs
 │   ├── Services/         → Session, GameManager, GameLogService
-│   ├── ViewModels/       → Steuerung der Views (z. B. SlotMachineViewModel)
-│   └── Views/            → WPF-XAML-Views (z. B. BlackJackView.xaml)
+│   ├── ViewModels/       → View controllers (e.g. SlotMachineViewModel)
+│   └── Views/            → WPF XAML Views (e.g. BlackJackView.xaml)
 │
 ├── KoteskiOlmesLB-426-Tests
 │   ├── SlotMachineTest.cs
 │   └── BlackJackTest.cs
 │
-└── .github/workflows/dotnet.yml → CI/CD-Workflow für Build & Test
+└── .github/workflows/dotnet.yml → CI/CD workflow for build & test
 ```
 
 ---
 
-## Projektstart
+## Getting Started
 
-1. Repository klonen
-2. Visual Studio öffnen und die Lösung laden:  
+1. Clone the repository
+2. Open the solution in Visual Studio:  
    `src/KoteskiOlmesLB-426/KoteskiOlmesLB-426.sln`
-3. Mit `F5` ausführen
-4. Startbetrag eingeben und Spiel wählen
+3. Run the project with `F5`
+4. Enter your starting balance and choose a game
 
 ---
 
-## Weiterentwicklungsmöglichkeiten
+## Future Enhancements
 
-- Erweiterung um zusätzliche Spiele (z. B. Roulette, Poker)
-- Einführung von Benutzerprofilen und Highscore
-- Persistenz durch Datenbankanbindung
-- Visuelle Animationen und akustisches Feedback
+- Add more games (e.g. Roulette, Poker)
+- Implement user profiles and highscore tracking
+- Add persistence through database support
+- Include visual animations and sound effects
 
 ---
 
-Dieses Projekt wurde im Rahmen einer schulischen Arbeit nach agilen Prinzipien konzipiert und umgesetzt.
+This project was developed as a school assignment using agile principles and modern .NET technologies.
