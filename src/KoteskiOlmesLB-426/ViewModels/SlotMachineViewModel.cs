@@ -78,8 +78,14 @@ namespace KoteskiOlmesLB_426.ViewModels
 
         public SlotMachineViewModel()
         {
-            _game = new SlotMachine();
-            _game.GameStateChanged += OnGameStateChanged;
+            _game = GameManager.Instance.StartGame(GameType.SlotMachine, SelectedBet)
+                ? Session.Instance.CurrentGame as SlotMachine
+                : new SlotMachine();
+
+            if (_game != null)
+            {
+                _game.GameStateChanged += OnGameStateChanged;
+            }
 
             Reels = new ObservableCollection<SlotSymbol> { SlotSymbol.Cherry, SlotSymbol.Cherry, SlotSymbol.Cherry };
             SelectedBet = BetOptions.First();
@@ -167,10 +173,10 @@ namespace KoteskiOlmesLB_426.ViewModels
 
             while (_isAutoSpinning)
             {
-                if (Session.Instance.CurrentPlayer.Balance < SelectedBet)
+                if (Session.Instance.CurrentPlayer?.Balance < SelectedBet)
                 {
-                    _isAutoSpinning = false;
-                    break;
+                    ResultMessage = "Nicht genug Jetons!";
+                    return;
                 }
 
                 Spin();
