@@ -1,5 +1,10 @@
 # CasinoWPF – Digital Casino Simulation with WPF
 
+# Showcase
+![grafik](https://github.com/user-attachments/assets/edcaf44c-be89-465c-bf82-ea97843a95bc)
+![grafik](https://github.com/user-attachments/assets/dc723a32-81ac-44c6-9ccd-d75f6d6823d1)
+
+
 **Submission Deadline:** April 24, 2025  
 **Project Start:** April 3, 2025 **/ Release:** April 25, 2025
 
