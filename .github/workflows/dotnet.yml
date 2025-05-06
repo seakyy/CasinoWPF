@@ -21,12 +21,12 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: src/KoteskiOlmesLB-426
+      working-directory: src/CasinoWPF
 
     - name: Build solution
       run: dotnet build --no-restore --configuration Release
-      working-directory: src/KoteskiOlmesLB-426
+      working-directory: src/CasinoWPF
 
     - name: Run tests
       run: dotnet test --configuration Debug --verbosity normal
-      working-directory: src/KoteskiOlmesLB-426
+      working-directory: src/CasinoWPF
