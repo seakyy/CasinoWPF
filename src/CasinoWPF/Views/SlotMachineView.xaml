@@ -141,7 +141,7 @@
                             CornerRadius="10">
                         <Viewbox>
                             <Image x:Name="Reel3ImageControl"
-                                   Source="{Binding Reel2DisplayImage}"
+                                   Source="{Binding Reel3DisplayImage}"
                                    RenderTransformOrigin="0.5,0.5"
                                    Stretch="Uniform"
                                    Width="100"
