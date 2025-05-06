@@ -36,14 +36,14 @@ A C# project based on **.NET 8.0** and **WPF**, simulating two classic casino ga
 
 ```plaintext
 /src
-├── KoteskiOlmesLB-426
+├── CasinoWPF
 │   ├── Models/           → Players, Cards, Game Results
 │   ├── Games/            → SlotMachine.cs, BlackJack.cs
 │   ├── Services/         → Session, GameManager, GameLogService
 │   ├── ViewModels/       → View controllers (e.g. SlotMachineViewModel)
 │   └── Views/            → WPF XAML Views (e.g. BlackJackView.xaml)
 │
-├── KoteskiOlmesLB-426-Tests
+├── CasinoWPF-Tests
 │   ├── SlotMachineTest.cs
 │   └── BlackJackTest.cs
 │
@@ -56,7 +56,7 @@ A C# project based on **.NET 8.0** and **WPF**, simulating two classic casino ga
 
 1. Clone the repository
 2. Open the solution in Visual Studio:  
-   `src/KoteskiOlmesLB-426/KoteskiOlmesLB-426.sln`
+   `src/CasinoWPF/CasinoWPF.sln`
 3. Run the project with `F5`
 4. Enter your starting balance and choose a game
 
