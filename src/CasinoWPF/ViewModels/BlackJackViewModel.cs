@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using CasinoWPF.Games;
 using CasinoWPF.Models;
 using CasinoWPF.Services;
-using System.Diagnostics;
-
 
 namespace CasinoWPF.ViewModels
 {
@@ -20,45 +20,25 @@ namespace CasinoWPF.ViewModels
         private bool _gameInProgress;
         private int _selectedBet;
         private int _selectedPlayerCount;
-        private int _playerWins;
-        private int _dealerWins;
+        private int _playerHighscore;
+        private int _currentWinStreak;
         private int _balance;
+
         public int PlayerScore => _game.GetPlayerHandValue();
         public int DealerScore => _game.GetDealerHandValue();
-
-
-
+        public string DealerName => _game.DealerName;
 
         public int Balance
         {
             get => _balance;
-            set
-            {
-                if (_balance == value) return; // Avoid unnecessary updates
-                _balance = value;
-                OnPropertyChanged(); // ❗️ Damit UI aktualisiert wird
-            }
+            set => SetProperty(ref _balance, value);
         }
 
-
-        /*
+        public int PlayerHighscore
         {
-            get => _playerWins;
-            set => SetProperty(ref _playerWins, value);
+            get => _playerHighscore;
+            set => SetProperty(ref _playerHighscore, value);
         }
-        */
-        public int DealerWins
-        {
-            get => _dealerWins;
-            set => SetProperty(ref _dealerWins, value);
-        }
-
-
-        public void RefreshBalance()
-        {
-            OnPropertyChanged(nameof(Balance));
-        }
-
 
         public ObservableCollection<Card> PlayerCards
         {
@@ -99,22 +79,11 @@ namespace CasinoWPF.ViewModels
             set => SetProperty(ref _resultMessage, value);
         }
 
-
         public bool GameInProgress
         {
             get => _gameInProgress;
-            set
-            {
-                if (_gameInProgress != value)
-                {
-                    _gameInProgress = value;
-                    Console.WriteLine($"📢 GameInProgress gesetzt auf: {value}");
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _gameInProgress, value);
         }
-
-
 
         public ICommand NewGameCommand { get; }
         public ICommand HitCommand { get; }
@@ -122,17 +91,15 @@ namespace CasinoWPF.ViewModels
         public ICommand DoubleDownCommand { get; }
         public ICommand ReturnToSelectionCommand { get; }
         public ICommand ReturnToMainMenuCommand { get; }
-        private int _currentBet;
 
+        private int _currentBet;
         public int CurrentBet => _currentBet;
         public int NumberOfEnemies => _computerPlayers.Count;
-
 
         public event EventHandler<NavigationEventArgs> NavigationRequested;
 
         public BlackJackViewModel(Player player)
         {
-            GameInProgress = false;
             _currentPlayer = player;
             _game = new BlackJack();
             _game.GameStateChanged += OnGameStateChanged;
@@ -157,11 +124,12 @@ namespace CasinoWPF.ViewModels
         {
             Debug.WriteLine("🎮 StartNewGame wurde aufgerufen");
 
+            PlayerCards.Clear();
+            DealerCards.Clear();
+
             if (_game.StartGame(_currentPlayer, SelectedBet, SelectedPlayerCount))
             {
-                GameInProgress = false;
-                Debug.WriteLine($"📢 GameInProgress gesetzt auf: {GameInProgress}");
-
+                GameInProgress = true;
                 UpdateGameState();
                 ResultMessage = string.Empty;
             }
@@ -171,11 +139,10 @@ namespace CasinoWPF.ViewModels
             }
         }
 
-
         private void UpdateGameState()
         {
             PlayerCards = new ObservableCollection<Card>(_game.PlayerHand);
-            DealerCards = new ObservableCollection<Card>(_game.DealerHand);
+            DealerCards = SelectedPlayerCount == 1 ? new ObservableCollection<Card>(_game.DealerHand) : new ObservableCollection<Card>();
             Balance = _currentPlayer.Balance;
 
             ComputerPlayers.Clear();
@@ -184,20 +151,33 @@ namespace CasinoWPF.ViewModels
 
             OnPropertyChanged(nameof(PlayerScore));
             OnPropertyChanged(nameof(DealerScore));
-
-            DealerCards = SelectedPlayerCount == 1
-                ? new ObservableCollection<Card>(_game.DealerHand)
-                : new ObservableCollection<Card>();
-
-
+            OnPropertyChanged(nameof(DealerName));
         }
 
         private void OnGameStateChanged(object sender, GameStateChangedEventArgs e)
         {
-            if (e.IsGameOver)
+            if (e.IsGameOver && e.Result is GameResult gameResult)
             {
                 GameInProgress = false;
                 ResultMessage = e.Message;
+
+                if (gameResult.IsWin)
+                {
+                    _currentWinStreak++;
+                    if (_currentWinStreak > PlayerHighscore)
+                        PlayerHighscore = _currentWinStreak;
+                }
+                else
+                {
+                    _currentWinStreak = 0;
+                }
+
+                GameLogService.Instance.AddEntry(
+                    GameType.BlackJack,
+                    gameResult.ResultDescription,
+                    gameResult.BetAmount,
+                    gameResult.WinAmount
+                );
             }
             else
             {
@@ -205,16 +185,6 @@ namespace CasinoWPF.ViewModels
             }
 
             UpdateGameState();
-
-            if (e.IsGameOver && e.Result is GameResult result)
-            {
-                GameLogService.Instance.AddEntry(
-                    GameType.BlackJack,
-                    result.ResultDescription,
-                    result.BetAmount,
-                    result.WinAmount
-                );
-            }
         }
 
         private void OnNavigationRequested(string view)
