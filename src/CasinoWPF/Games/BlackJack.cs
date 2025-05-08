@@ -344,6 +344,7 @@ namespace CasinoWPF.Games
 
             OnGameStateChanged(resultDescription, true, result);
             return result;
+
         }
 
         protected virtual void OnGameStateChanged(string message, bool isGameOver = false, GameResult result = null)
