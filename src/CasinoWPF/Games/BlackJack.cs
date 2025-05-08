@@ -16,6 +16,9 @@ namespace CasinoWPF.Games
         private int _currentBet;
         private bool _gameRunning;
         private int _numberOfPlayers;
+        private string _dealerName = "Dealer";
+        public string DealerName => _dealerName;
+
 
         public int GetPlayerHandValue() => CalculateHandValue(_playerHand);
         public int GetDealerHandValue() => CalculateHandValue(_dealerHand);
@@ -155,6 +158,16 @@ namespace CasinoWPF.Games
             {
                 _dealerHand.Add(DrawCard());
                 _dealerHand.Add(DrawCard());
+                _dealerName = "Dealer";
+            }
+            else
+            {
+                for (int i = 0; i < numberOfPlayers; i++)
+                {
+                    var comp = new ComputerPlayer($"Computer {i + 1}", 1000);
+                    comp.SetBet(betAmount);
+                    _computerPlayers.Add(comp);
+                }
             }
 
 
@@ -344,6 +357,7 @@ namespace CasinoWPF.Games
 
             OnGameStateChanged(resultDescription, true, result);
             return result;
+
         }
 
         protected virtual void OnGameStateChanged(string message, bool isGameOver = false, GameResult result = null)
