@@ -41,12 +41,12 @@ namespace CasinoWPF.ViewModels
         }
 
 
-        /*
+        public int PlayerWins
         {
             get => _playerWins;
             set => SetProperty(ref _playerWins, value);
         }
-        */
+
         public int DealerWins
         {
             get => _dealerWins;
@@ -198,6 +198,11 @@ namespace CasinoWPF.ViewModels
             {
                 GameInProgress = false;
                 ResultMessage = e.Message;
+
+                if (e.Result is GameResult result && result.IsWin)
+                {
+                    PlayerWins++; // Increment player wins counter
+                }
             }
             else
             {
@@ -206,13 +211,13 @@ namespace CasinoWPF.ViewModels
 
             UpdateGameState();
 
-            if (e.IsGameOver && e.Result is GameResult result)
+            if (e.IsGameOver && e.Result is GameResult gameResult)
             {
                 GameLogService.Instance.AddEntry(
                     GameType.BlackJack,
-                    result.ResultDescription,
-                    result.BetAmount,
-                    result.WinAmount
+                    gameResult.ResultDescription,
+                    gameResult.BetAmount,
+                    gameResult.WinAmount
                 );
             }
         }

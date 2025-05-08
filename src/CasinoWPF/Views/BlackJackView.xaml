@@ -24,10 +24,14 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <!-- Titel -->
                     <ColumnDefinition Width="*"/>
+                    <!-- Highscore -->
                     <ColumnDefinition Width="Auto"/>
+                    <!-- Guthaben -->
                 </Grid.ColumnDefinitions>
 
+                <!-- Titel -->
                 <TextBlock Grid.Column="0" 
                            Text="BlackJack" 
                            Foreground="White" 
@@ -35,6 +39,16 @@
                            FontWeight="Bold" 
                            VerticalAlignment="Center"/>
 
+                <!-- Highscore -->
+                <TextBlock Grid.Column="1" 
+                           Text="{Binding PlayerWins, StringFormat=Highscore: {0}}" 
+                           Foreground="White" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+
+                <!-- Guthaben -->
                 <TextBlock Grid.Column="2" 
                            Text="{Binding Balance, StringFormat=Guthaben: {0} Jetons}" 
                            Foreground="White" 
@@ -42,6 +56,7 @@
                            VerticalAlignment="Center"/>
             </Grid>
         </Border>
+
 
         <!-- Dealer's Hand -->
         <Border Grid.Row="1" Background="#34495E" Margin="10,5">
