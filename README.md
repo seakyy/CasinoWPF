@@ -5,6 +5,13 @@
 ![grafik](https://github.com/user-attachments/assets/dc723a32-81ac-44c6-9ccd-d75f6d6823d1)
 
 
+
+
+# Overview Diagram
+![diagram](https://github.com/user-attachments/assets/c92599cf-65cf-4356-b244-ae4034fc3e45)
+
+
+
 **Submission Deadline:** April 24, 2025  
 **Project Start:** April 3, 2025 **/ Release:** April 25, 2025
 
