@@ -34,13 +34,11 @@ namespace CasinoWPF.ViewModels
             }
         }
 
-        // Commands
         public ICommand StartBlackJackCommand { get; }
         public ICommand StartSlotMachineCommand { get; }
         public ICommand ReturnToMainMenuCommand { get; }
 
 
-        // Event für Navigation
         public event EventHandler<NavigationEventArgs> NavigationRequested;
 
         public GameSelectionViewModel()
@@ -48,10 +46,8 @@ namespace CasinoWPF.ViewModels
             _session = Session.Instance;
             _session.AddObserver(this);
 
-            // Initialisiere den CurrentPlayer aus der Session
             CurrentPlayer = _session.CurrentPlayer;
 
-            // Initialisiere Commands
             StartBlackJackCommand = new RelayCommand(ExecuteStartBlackJack);
             StartSlotMachineCommand = new RelayCommand(ExecuteStartSlotMachine);
             ReturnToMainMenuCommand = new RelayCommand(ExecuteReturnToMainMenu);
@@ -62,7 +58,6 @@ namespace CasinoWPF.ViewModels
         // IObserver Implementation
         public void Update(SessionData data)
         {
-            // Aktualisiere den CurrentPlayer, wenn er sich in der Session ändert
             CurrentPlayer = data.CurrentPlayer;
         }
 

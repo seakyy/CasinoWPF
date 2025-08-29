@@ -15,7 +15,7 @@ namespace CasinoWPF.Models
         public string ResultDescription { get; set; }
         public DateTime Timestamp { get; set; }
 
-        // Für spezifische Spielergebnisse (z.B. Kartenwerte bei BlackJack)
+        // store game specific results, e.g. slot machine symbols / blackjack hands
         public Dictionary<string, object> GameSpecificResults { get; set; }
 
         public GameResult()

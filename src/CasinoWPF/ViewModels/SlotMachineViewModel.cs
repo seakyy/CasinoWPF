@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace CasinoWPF.ViewModels
 {
@@ -21,6 +23,7 @@ namespace CasinoWPF.ViewModels
         private int _selectedBet;
         private int _balance;
         private bool _isAutoSpinning = false;
+        private string _winType;
 
         public ImageSource Reel1DisplayImage { get; set; }
         public ImageSource Reel2DisplayImage { get; set; }
@@ -28,7 +31,26 @@ namespace CasinoWPF.ViewModels
 
         public bool HasResult => !string.IsNullOrWhiteSpace(ResultMessage);
 
-        public Brush ResultBackground => _resultMessage?.ToLower().Contains("gewonnen") == true ? Brushes.Green : Brushes.IndianRed;
+        public Brush ResultBackground
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_resultMessage))
+                    return Brushes.Transparent;
+
+                if (_resultMessage.ToLower().Contains("jackpot"))
+                    return Brushes.Gold;
+                if (_resultMessage.ToLower().Contains("gewonnen"))
+                    return Brushes.Green;
+                return Brushes.IndianRed;
+            }
+        }
+
+        public string WinType
+        {
+            get => _winType;
+            set => SetProperty(ref _winType, value);
+        }
 
         public ObservableCollection<SlotSymbol> Reels
         {
@@ -106,6 +128,7 @@ namespace CasinoWPF.ViewModels
             if (_game.StartGame(player, SelectedBet))
             {
                 ResultMessage = string.Empty;
+                WinType = "";
                 Balance = player.Balance;
             }
         }
@@ -119,7 +142,7 @@ namespace CasinoWPF.ViewModels
                 _game.StartGame(player, SelectedBet);
             }
 
-            // Fake-Animation: für 500ms mehrere Symbole durchrotieren
+            // Fake animation so it looks like the reels are spinning
             for (int i = 0; i < 10; i++)
             {
                 Reel1DisplayImage = GetRandomImage();
@@ -131,10 +154,10 @@ namespace CasinoWPF.ViewModels
                 await Task.Delay(50);
             }
 
-            // Jetzt echtes Ergebnis anzeigen
+            // show real result
             _game.ExecuteAction("spin");
 
-            // Warten, bis GameStateChanged aktualisiert hat:
+            // wait till the game state has updated
             await Task.Delay(50);
 
             Reel1DisplayImage = Reel1Image;
@@ -143,6 +166,51 @@ namespace CasinoWPF.ViewModels
             OnPropertyChanged(nameof(Reel1DisplayImage));
             OnPropertyChanged(nameof(Reel2DisplayImage));
             OnPropertyChanged(nameof(Reel3DisplayImage));
+
+            // special animation for win
+            await PlayWinAnimation();
+        }
+
+        private async Task PlayWinAnimation()
+        {
+            if (WinType == "ThreeOfAKind")
+            {
+                // Jackpot animation for three same symbolss
+                await Task.WhenAll(
+                    PulseReel(Reel1ImageControl),
+                    PulseReel(Reel2ImageControl),
+                    PulseReel(Reel3ImageControl)
+                );
+            }
+            else if (WinType == "TwoOfAKind")
+            {
+                // same animation but only for the two matching reels
+                if (Reels[0] == Reels[1])
+                {
+                    await Task.WhenAll(PulseReel(Reel1ImageControl), PulseReel(Reel2ImageControl));
+                }
+                else if (Reels[1] == Reels[2])
+                {
+                    await Task.WhenAll(PulseReel(Reel2ImageControl), PulseReel(Reel3ImageControl));
+                }
+                else if (Reels[0] == Reels[2])
+                {
+                    await Task.WhenAll(PulseReel(Reel1ImageControl), PulseReel(Reel3ImageControl));
+                }
+            }
+        }
+
+        private async Task PulseReel(Image reelImage)
+        {
+            if (reelImage == null) return;
+
+            for (int i = 0; i < 3; i++)
+            {
+                reelImage.Opacity = 0.7;
+                await Task.Delay(100);
+                reelImage.Opacity = 1.0;
+                await Task.Delay(100);
+            }
         }
 
         private ImageSource GetRandomImage()
@@ -176,11 +244,12 @@ namespace CasinoWPF.ViewModels
                 if (Session.Instance.CurrentPlayer?.Balance < SelectedBet)
                 {
                     ResultMessage = "Nicht genug Jetons!";
+                    _isAutoSpinning = false;
                     return;
                 }
 
                 Spin();
-                await Task.Delay(1000);
+                await Task.Delay(2000); // longer delay to see results better / longer
             }
         }
 
@@ -192,6 +261,12 @@ namespace CasinoWPF.ViewModels
 
             if (e.IsGameOver && e.Result is GameResult result)
             {
+                if (result.GameSpecificResults != null &&
+                    result.GameSpecificResults.ContainsKey("WinType"))
+                {
+                    WinType = result.GameSpecificResults["WinType"] as string;
+                }
+
                 GameLogService.Instance.AddEntry(
                     GameType.SlotMachine,
                     result.ResultDescription,
@@ -210,6 +285,10 @@ namespace CasinoWPF.ViewModels
         public ImageSource Reel2Image => GetImage(1);
         public ImageSource Reel3Image => GetImage(2);
 
+        public Image Reel1ImageControl { get; set; }
+        public Image Reel2ImageControl { get; set; }
+        public Image Reel3ImageControl { get; set; }
+
         private ImageSource GetImage(int index)
         {
             if (Reels.Count > index && _symbolImagePaths.TryGetValue(Reels[index], out var path))
@@ -221,7 +300,7 @@ namespace CasinoWPF.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"❌ Fehler beim Laden von Bild {path}: {ex.Message}");
+                    Console.WriteLine($"❌❌ Fehler beim Laden von Bild {path}: {ex.Message}");
                 }
             }
             return null;

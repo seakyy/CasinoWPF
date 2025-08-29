@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace CasinoWPF.Services
 {
-    // Observer Pattern Interface - Beobachter
     public interface IObserver<T>
     {
         void Update(T data);
     }
 
-    // Observer Pattern Interface - Beobachtbares Objekt
     public interface IObservable<T>
     {
         void AddObserver(IObserver<T> observer);
@@ -20,7 +18,6 @@ namespace CasinoWPF.Services
         void NotifyObservers();
     }
 
-    // Konkrete Implementierung eines beobachtbaren Objekts
     public abstract class Observable<T> : IObservable<T>
     {
         private readonly List<IObserver<T>> _observers;

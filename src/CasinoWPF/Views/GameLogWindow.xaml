@@ -4,13 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CasinoWPF.Views"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="Spielverlauf" Height="450" Width="800">
+        Title="Spielverlauf und Statistik" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen">
 
-    <DockPanel Margin="10">
-        <!-- Kopfzeile mit Button -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-            <Button Content="📥 Spielverlauf speichern"
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Border">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Background" Value="#F8F9FA" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="#DEE2E6" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- header with button -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,10">
+            <TextBlock Text="Spielverlauf und Statistik" 
+                       FontSize="18" 
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"/>
+            <Button Content="Spielverlauf speichern"
                     Click="SaveGameLog_Click"
                     Background="#27AE60"
                     Foreground="White"
@@ -19,24 +46,100 @@
                     BorderBrush="#1E8449"
                     BorderThickness="1"
                     Cursor="Hand"
-                    Margin="0,0,0,5"/>
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,0"/>
         </StackPanel>
 
-        <!-- Tabelle -->
-        <DataGrid ItemsSource="{Binding GameLogEntries}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  HeadersVisibility="Column"
-                  CanUserAddRows="False"
-                  GridLinesVisibility="Horizontal"
-                  RowHeaderWidth="0">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="🕒 Zeit" Binding="{Binding Timestamp}" Width="*"/>
-                <DataGridTextColumn Header="🎮 Spiel" Binding="{Binding GameMode}" Width="*"/>
-                <DataGridTextColumn Header="📄 Ereignis" Binding="{Binding Message}" Width="2*"/>
-                <DataGridTextColumn Header="💰 Einsatz" Binding="{Binding Bet}" Width="*"/>
-                <DataGridTextColumn Header="🏆 Gewinn" Binding="{Binding Win}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </DockPanel>
+        <!-- core  -->
+        <Grid Grid.Row="1" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- table -->
+            <Border Grid.Column="0" Margin="0,0,10,0">
+                <DataGrid ItemsSource="{Binding GameLogEntries}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          GridLinesVisibility="Horizontal"
+                          RowHeaderWidth="0"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Zeit" Binding="{Binding Timestamp, StringFormat='HH:mm:ss'}" Width="*" />
+                        <DataGridTextColumn Header="Spiel" Binding="{Binding GameMode}" Width="*" />
+                        <DataGridTextColumn Header="Ereignis" Binding="{Binding Message}" Width="2*" />
+                        <DataGridTextColumn Header="Einsatz" Binding="{Binding Bet, StringFormat='{}{0:C}'}" Width="*" />
+                        <DataGridTextColumn Header="Gewinn" Binding="{Binding Win, StringFormat='{}{0:C}'}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- statistic area-->
+            <Border Grid.Column="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Statistik" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,10" />
+
+                    <!-- circle diagramm -->
+                    <lvc:PieChart Grid.Row="1" x:Name="WinLossChart"
+                                  Hoverable="True" 
+                                  DataTooltip="{x:Null}"
+                                  Margin="0,0,0,10"
+                                  InnerRadius="50"
+                                  LegendLocation="Bottom">
+                        <lvc:PieChart.ChartLegend>
+                            <lvc:DefaultLegend />
+                        </lvc:PieChart.ChartLegend>
+                    </lvc:PieChart>
+
+                    <!-- finance statistics -->
+                    <StackPanel Grid.Row="2" Orientation="Vertical">
+                        <TextBlock Text="Startguthaben:"/>
+                        <TextBlock Text="{Binding StartingBalance, StringFormat='{}{0:C}'}" FontWeight="Bold" Margin="20,0,0,0"/>
+
+                        <TextBlock Text="Ausgegeben:"/>
+                        <TextBlock Text="{Binding TotalSpent, StringFormat='{}{0:C}'}" FontWeight="Bold" Margin="20,0,0,0"/>
+
+                        <TextBlock Text="Gewonnen:" Foreground="#27AE60"/>
+                        <TextBlock Text="{Binding TotalWon, StringFormat='{}{0:C}'}" FontWeight="Bold" Margin="20,0,0,0" Foreground="#27AE60"/>
+
+                        <TextBlock Text="Verloren:" Foreground="#E74C3C"/>
+                        <TextBlock Text="{Binding TotalLost, StringFormat='{}{0:C}'}" FontWeight="Bold" Margin="20,0,0,0" Foreground="#E74C3C"/>
+
+                        <TextBlock Text="Endguthaben:"/>
+                        <TextBlock Text="{Binding EndingBalance, StringFormat='{}{0:C}'}" FontWeight="Bold" Margin="20,0,0,0"/>
+
+                        <TextBlock Text="Gesamtgewinn/Verlust:"/>
+                        <TextBlock Text="{Binding NetResult, StringFormat='{}{0:C}'}" 
+                                   FontWeight="Bold" 
+                                   Margin="20,0,0,0"
+                                   Foreground="{Binding NetResultColor}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- summary -->
+        <Border Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Spiele gesamt:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding TotalGames}" Margin="10,0,20,0" FontWeight="Bold"/>
+
+                <TextBlock Text="Gewonnene Spiele:" Foreground="#27AE60" FontWeight="Bold"/>
+                <TextBlock Text="{Binding WonGames}" Margin="10,0,20,0" FontWeight="Bold" Foreground="#27AE60"/>
+
+                <TextBlock Text="Verlorene Spiele:" Foreground="#E74C3C" FontWeight="Bold"/>
+                <TextBlock Text="{Binding LostGames}" Margin="10,0,20,0" FontWeight="Bold" Foreground="#E74C3C"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>
