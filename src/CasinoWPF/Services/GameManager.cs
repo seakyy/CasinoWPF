@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace CasinoWPF.Services
 {
-    // GameManager - Verwaltet Spielstarts, Einsätze, etc.
-    // Implementiert auch das Observer-Pattern, um über Änderungen in der Session informiert zu werden
+    // implemented observer pattern to react to session changes
     public class GameManager : IObserver<SessionData>
     {
         private static readonly Lazy<GameManager> _instance = new Lazy<GameManager>(() => new GameManager());
@@ -24,42 +23,38 @@ namespace CasinoWPF.Services
             _session.AddObserver(this);
         }
 
-        // IObserver Implementation
+        // IObserver implementation
         public void Update(SessionData data)
         {
-            // Reagiere auf Änderungen in der Session
-            // z.B. wenn ein neues Spiel ausgewählt wurde
+            // for example, if the game type changes, we might want to create a new game instance
             if (data.CurrentGameType.HasValue && data.CurrentGame == null)
             {
                 CreateGameInstance(data.CurrentGameType.Value);
             }
         }
 
-        // Erstellt eine neue Spielinstanz mit dem Factory-Pattern
+        // factory pattern to create game instances
         private void CreateGameInstance(GameType gameType)
         {
             var game = GameFactory.Instance.CreateGame(gameType);
             _session.CurrentGame = game;
         }
 
-        // Startet ein bestimmtes Spiel
         public bool StartGame(GameType gameType, int betAmount)
         {
             if (_session.CurrentPlayer == null || betAmount <= 0)
                 return false;
 
-            // Prüfe, ob der Spieler genug Guthaben hat
             if (_session.CurrentPlayer.Balance < betAmount)
                 return false;
 
-            // Erstelle das Spiel, wenn nötig
             if (_session.CurrentGameType != gameType || _session.CurrentGame == null)
             {
                 _session.CurrentGameType = gameType;
                 CreateGameInstance(gameType);
             }
 
-            // Starte das Spiel
+            // start game
             var started = _session.CurrentGame.StartGame(_session.CurrentPlayer, betAmount);
             if (started)
             {
@@ -69,7 +64,6 @@ namespace CasinoWPF.Services
             return started;
         }
 
-        // Beendet das aktuelle Spiel
         public GameResult EndCurrentGame()
         {
             if (_session.CurrentGame == null || !_session.CurrentGame.IsGameRunning)
@@ -78,7 +72,6 @@ namespace CasinoWPF.Services
             var result = _session.CurrentGame.EndGame();
             _session.LastResult = result;
 
-            // Füge eventuellen Gewinn zum Guthaben des Spielers hinzu
             if (result.IsWin)
             {
                 _session.CurrentPlayer.AddWinnings(result.WinAmount);
@@ -87,7 +80,6 @@ namespace CasinoWPF.Services
             return result;
         }
 
-        // Führt eine Aktion im aktuellen Spiel aus
         public bool ExecuteGameAction(string actionName, params object[] parameters)
         {
             if (_session.CurrentGame == null || !_session.CurrentGame.IsGameRunning)

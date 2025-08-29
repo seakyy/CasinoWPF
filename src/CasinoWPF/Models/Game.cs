@@ -16,14 +16,8 @@ namespace CasinoWPF.Models
         int MaximumBet { get; }
         bool IsGameRunning { get; }
 
-        /// <summary>
-        /// Startet eine neue Spielrunde mit dem angegebenen Einsatz (Einzelspieler-Modus).
-        /// </summary>
         bool StartGame(Player player, int betAmount);
 
-        /// <summary>
-        /// Startet eine neue Spielrunde mit Einsatz und optionaler Spieleranzahl (z. B. Multiplayer bei BlackJack).
-        /// </summary>
         bool StartGame(Player player, int betAmount, int numberOfPlayers);
 
 

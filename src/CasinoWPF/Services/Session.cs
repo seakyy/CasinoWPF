@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CasinoWPF.Services
 {
 
-    // Session-Daten, die von Beobachtern empfangen werden
+    // Session daten
     public class SessionData
     {
         public Player CurrentPlayer { get; set; }
@@ -18,7 +18,7 @@ namespace CasinoWPF.Services
         public GameResult LastResult { get; set; }
     }
 
-    // Singleton Session-Klasse, die das Observable Pattern implementiert
+    // singleton session manager implementing observer pattern
     public class Session : Observable<SessionData>
     {
         private static readonly Lazy<Session> _instance = new Lazy<Session>(() => new Session());
@@ -27,7 +27,6 @@ namespace CasinoWPF.Services
 
         private Session()
         {
-            // Initialisiere den State
             State = new SessionData();
         }
 

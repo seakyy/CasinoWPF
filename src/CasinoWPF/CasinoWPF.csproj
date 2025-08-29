@@ -34,12 +34,10 @@
   <ItemGroup>
     <Resource Include="Resources\Bar.jpg" />
     <Resource Include="Resources\Bell.jpg" />
+    <Resource Include="Resources\casino_logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\casino_logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\Cherry.jpg" />
     <Resource Include="Resources\Diamond.jpg" />
     <Resource Include="Resources\game_log_icon.ico" />
@@ -51,6 +49,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
   </ItemGroup>
 
   <ItemGroup>

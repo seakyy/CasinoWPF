@@ -16,6 +16,9 @@ namespace CasinoWPF.Games
         private int _currentBet;
         private bool _gameRunning;
         private int _numberOfPlayers;
+        private string _dealerName = "Dealer";
+        public string DealerName => _dealerName;
+
 
         public int GetPlayerHandValue() => CalculateHandValue(_playerHand);
         public int GetDealerHandValue() => CalculateHandValue(_dealerHand);
@@ -139,7 +142,6 @@ namespace CasinoWPF.Games
 
         public bool StartGame(Player player, int betAmount)
         {
-            // Standardmäßig mit einem Computergegner
             return StartGame(player, betAmount, 1);
         }
 
@@ -147,52 +149,45 @@ namespace CasinoWPF.Games
         {
             if (player == null || betAmount < MinimumBet || betAmount > MaximumBet)
                 return false;
-
             if (!player.PlaceBet(betAmount))
                 return false;
 
-            if (numberOfPlayers == 1)
-            {
-                _dealerHand.Add(DrawCard());
-                _dealerHand.Add(DrawCard());
-            }
-
-
             InitializeGame();
+
             _currentPlayer = player;
             _currentBet = betAmount;
+            _numberOfPlayers = numberOfPlayers;
 
-            for (int i = 0; i < _numberOfPlayers; i++)
-            {
-                var comp = new ComputerPlayer($"Computer {i + 1}", 1000);
-                comp.SetBet(betAmount);
-                _computerPlayers.Add(comp);
-            }
-
-            NumberOfPlayers = numberOfPlayers;
-
-
-            _gameRunning = true;
             CreateDeck();
 
             _playerHand.Add(DrawCard());
-            _dealerHand.Add(DrawCard());
             _playerHand.Add(DrawCard());
+
+            _dealerHand.Add(DrawCard());
             _dealerHand.Add(DrawCard());
 
-            foreach (var comp in _computerPlayers)
+
+            if (numberOfPlayers > 1)
             {
-                comp.AddCard(DrawCard());
-                comp.AddCard(DrawCard());
+                for (int i = 0; i < numberOfPlayers - 1; i++) // numberOfPlayers - 1, bcs dealer already is present
+                {
+                    var comp = new ComputerPlayer($"Computer {i + 1}", 1000);
+                    comp.SetBet(betAmount);
+                    comp.AddCard(DrawCard());
+                    comp.AddCard(DrawCard());
+                    _computerPlayers.Add(comp);
+                }
             }
+
+            _gameRunning = true;
 
             if (CalculateHandValue(_playerHand) == 21)
                 return ExecuteAction("stand");
 
             OnGameStateChanged("Spiel gestartet. Deine Karten: " + string.Join(", ", _playerHand));
             return true;
-
         }
+
 
         public bool ExecuteAction(string actionName, params object[] parameters)
         {
@@ -344,6 +339,7 @@ namespace CasinoWPF.Games
 
             OnGameStateChanged(resultDescription, true, result);
             return result;
+
         }
 
         protected virtual void OnGameStateChanged(string message, bool isGameOver = false, GameResult result = null)

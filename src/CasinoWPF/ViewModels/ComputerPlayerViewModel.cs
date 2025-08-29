@@ -1,5 +1,4 @@
-﻿// ComputerPlayerViewModel.cs
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CasinoWPF.Games;
 using CasinoWPF.Models;
 
