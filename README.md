@@ -1,8 +1,10 @@
 # CasinoWPF – Digital Casino Simulation with WPF
 
 # Showcase
-![grafik](https://github.com/user-attachments/assets/edcaf44c-be89-465c-bf82-ea97843a95bc)
-![grafik](https://github.com/user-attachments/assets/dc723a32-81ac-44c6-9ccd-d75f6d6823d1)
+<img width="2366" height="901" alt="grafik" src="https://github.com/user-attachments/assets/1aa894ca-cefe-4796-a86d-bd2897d3b5d5" />
+
+<img width="2362" height="889" alt="grafik" src="https://github.com/user-attachments/assets/e9e8dd4c-2cd3-47a7-a671-5e517c06d179" />
+
 
 
 
