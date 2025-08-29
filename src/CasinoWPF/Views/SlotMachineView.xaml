@@ -5,10 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:CasinoWPF.Views"
+      xmlns:vm="clr-namespace:CasinoWPF.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Slot Machine">
+      Title="Slot Machine"
+      Loaded="Page_Loaded">
 
+    <Page.DataContext>
+        <vm:SlotMachineViewModel />
+    </Page.DataContext>
 
     <Page.Resources>
         <Storyboard x:Key="ShakeReel">
@@ -16,6 +21,21 @@
                              From="0" To="10" Duration="0:0:0.05" AutoReverse="True" RepeatBehavior="0:0:0.3"/>
         </Storyboard>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Win Indicator Styles -->
+        <Style x:Key="JackpotIndicatorStyle" TargetType="Border">
+            <Setter Property="Background" Value="Gold"/>
+            <Setter Property="BorderBrush" Value="Orange"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+
+        <Style x:Key="WinIndicatorStyle" TargetType="Border">
+            <Setter Property="Background" Value="LimeGreen"/>
+            <Setter Property="BorderBrush" Value="Green"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -71,11 +91,15 @@
                         Margin="20,10" 
                         Padding="5" 
                         CornerRadius="5">
-                    <TextBlock Text="{Binding JackpotAmount, StringFormat={}JACKPOT: {0} JETONS}" 
-                               FontSize="18" 
-                               FontWeight="Bold" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="GEWINNKOMBINATIONEN: " 
+                                   FontSize="14" 
+                                   FontWeight="Bold" 
+                                   Foreground="White"/>
+                        <TextBlock Text="3 gleiche = JACKPOT || 2 gleiche = KLEINER GEWINN" 
+                                   FontSize="12" 
+                                   Foreground="White"/>
+                    </StackPanel>
                 </Border>
 
                 <!-- Slot Reels -->
@@ -92,21 +116,20 @@
                             Margin="10" 
                             BorderBrush="#BDC3C7" 
                             BorderThickness="5" 
-                            CornerRadius="10">
+                            CornerRadius="10"
+                            x:Name="Reel1Border">
                         <Viewbox>
-                            <Viewbox>
-                                <Image x:Name="Reel1ImageControl"
-                                       Source="{Binding Reel1DisplayImage}"
-                                       RenderTransformOrigin="0.5,0.5"
-                                       Stretch="Uniform"
-                                       Width="100"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center">
-                                    <Image.RenderTransform>
-                                        <TranslateTransform />
-                                    </Image.RenderTransform>
-                                </Image>
-                            </Viewbox>
+                            <Image x:Name="Reel1ImageControl"
+                                   Source="{Binding Reel1DisplayImage}"
+                                   RenderTransformOrigin="0.5,0.5"
+                                   Stretch="Uniform"
+                                   Width="100"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                                <Image.RenderTransform>
+                                    <TranslateTransform />
+                                </Image.RenderTransform>
+                            </Image>
                         </Viewbox>
                     </Border>
 
@@ -116,7 +139,8 @@
                             Margin="10" 
                             BorderBrush="#BDC3C7" 
                             BorderThickness="5" 
-                            CornerRadius="10">
+                            CornerRadius="10"
+                            x:Name="Reel2Border">
                         <Viewbox>
                             <Image x:Name="Reel2ImageControl"
                                    Source="{Binding Reel2DisplayImage}"
@@ -138,7 +162,8 @@
                             Margin="10" 
                             BorderBrush="#BDC3C7" 
                             BorderThickness="5" 
-                            CornerRadius="10">
+                            CornerRadius="10"
+                            x:Name="Reel3Border">
                         <Viewbox>
                             <Image x:Name="Reel3ImageControl"
                                    Source="{Binding Reel3DisplayImage}"
@@ -153,6 +178,20 @@
                             </Image>
                         </Viewbox>
                     </Border>
+
+                    <!-- Win Indicators -->
+                    <Border x:Name="TwoLeftIndicator" Grid.Column="0" Grid.ColumnSpan="2"
+                            Background="LimeGreen" Opacity="0.7" CornerRadius="5" 
+                            Margin="15,5,15,5" Visibility="Collapsed"/>
+                    <Border x:Name="TwoRightIndicator" Grid.Column="1" Grid.ColumnSpan="2"
+                            Background="LimeGreen" Opacity="0.7" CornerRadius="5"
+                            Margin="15,5,15,5" Visibility="Collapsed"/>
+                    <Border x:Name="TwoOuterIndicator" Grid.Column="0" Grid.ColumnSpan="3"
+                            Background="LimeGreen" Opacity="0.7" CornerRadius="5"
+                            Margin="15,5,15,5" Visibility="Collapsed"/>
+                    <Border x:Name="ThreeIndicator" Grid.Column="0" Grid.ColumnSpan="3"
+                            Background="Gold" Opacity="0.7" CornerRadius="5"
+                            Margin="15,5,15,5" Visibility="Collapsed"/>
                 </Grid>
 
                 <!-- Result Message -->
@@ -166,7 +205,9 @@
                                FontSize="16" 
                                FontWeight="Bold" 
                                Foreground="White" 
-                               HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"/>
                 </Border>
             </Grid>
         </Border>
@@ -202,8 +243,7 @@
                     Foreground="Black" 
                     FontSize="16" 
                     FontWeight="Bold" 
-                    Padding="20,10" 
-                    IsEnabled="{Binding CanSpin}"/>
+                    Padding="20,10"/>
 
             <StackPanel Grid.Column="2" 
                         Orientation="Horizontal" 

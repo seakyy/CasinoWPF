@@ -17,9 +17,6 @@ using RelayCommand = CasinoWPF.Services.RelayCommand;
 
 namespace CasinoWPF.Views
 {
-    /// <summary>
-    /// Interaction logic for StartPage.xaml
-    /// </summary>
     public partial class StartPage : Page
     {
         public StartPage()

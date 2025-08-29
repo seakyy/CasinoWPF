@@ -5,7 +5,7 @@ using CasinoWPF.Models;
 
 namespace CasinoWPF.Games
 {
-    // Factory Pattern für die Erstellung von Spielen
+    // Factory pattern
     public class GameFactory
     {
         private static readonly Lazy<GameFactory> _instance = new Lazy<GameFactory>(() => new GameFactory());

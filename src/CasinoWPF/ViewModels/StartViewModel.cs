@@ -61,10 +61,10 @@ namespace CasinoWPF.ViewModels
                 return;
             }
 
-            // Alles OK → Spielsession starten und navigieren
+            GameLogService.Instance.SetStartingBalance(balance);
+
             Session.Instance.StartNewSession(PlayerName, balance);
 
-            // Navigate using MainWindow's Frame
             var mainWindow = Application.Current.MainWindow as MainWindow;
             if (mainWindow != null && mainWindow.MainFrame != null)
             {

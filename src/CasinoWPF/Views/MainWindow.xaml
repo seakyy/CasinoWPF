@@ -10,7 +10,6 @@
         Background="#E0E0E0"
         Closed="Window_Closed">
 
-    <!-- Ressourcen für Stile -->
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="14"/>
@@ -41,7 +40,7 @@
 
         <!-- Header -->
         <Border Grid.Row="0" Background="#2C3E50" Padding="20,10">
-            <TextBlock Text="Willkommen im Casino!" 
+            <TextBlock Text="Willkommen!" 
                        FontSize="24" 
                        Foreground="White" 
                        HorizontalAlignment="Center"/>

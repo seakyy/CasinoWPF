@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace CasinoWPF.Models
 {
-    /// <summary>
-    /// Typ des Spiels
-    /// </summary>
     public enum GameType
     {
         SlotMachine,
         BlackJack
     }
 
-    /// <summary>
-    /// Spielergebnisse für BlackJack
-    /// </summary>
     public enum BlackJackResult
     {
         Win,
@@ -27,9 +21,6 @@ namespace CasinoWPF.Models
         Bust
     }
 
-    /// <summary>
-    /// Karten-Farben
-    /// </summary>
     public enum CardSuit
     {
         Hearts,
@@ -38,9 +29,6 @@ namespace CasinoWPF.Models
         Spades
     }
 
-    /// <summary>
-    /// Karten-Werte
-    /// </summary>
     public enum CardValue
     {
         Two = 2,
@@ -52,15 +40,12 @@ namespace CasinoWPF.Models
         Eight = 8,
         Nine = 9,
         Ten = 10,
-        Jack = 11,    // Diese Werte für die Enum-Definition müssen unterschiedlich sein
-        Queen = 12,   // aber in der Spiellogik werden sie als 10 behandelt
+        Jack = 11,    // these face cards (jack,queen,king,ace) are treated as 10 in game logic
+        Queen = 12,   
         King = 13,
         Ace = 14
     }
 
-    /// <summary>
-    /// Symbole für die Slot Machine
-    /// </summary>
     public enum SlotSymbol
     {
         Cherry,
@@ -73,9 +58,6 @@ namespace CasinoWPF.Models
         Diamond
     }
 
-    /// <summary>
-    /// Aktion im BlackJack Spiel
-    /// </summary>
     public enum BlackJackAction
     {
         Hit,

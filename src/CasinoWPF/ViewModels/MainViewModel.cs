@@ -87,7 +87,7 @@ namespace CasinoWPF.ViewModels
 
         public void Update(SessionData data)
         {
-            // optional implementieren, falls benötigt
+            // maybe update UI based on session changes if needed
         }
 
         private bool CanStartGame(object parameter)
